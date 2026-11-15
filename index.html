@@ -1,0 +1,1388 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}</style></head><body>
+<title>Le voyage de Séleirine</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout: sticky progress track on top (Séleirine runs along it), a guide column with Séleirine and her speech bubble beside one scene at a time, nav at the bottom. Hard offset shadows are the one bold move. */
+:root{
+  --bg:#F2EEFF; --surface:#FFFFFF; --surface2:#E4DCFF; --ink:#1C1642; --muted:#5A5486;
+  --line:#1C1642; --shadow:#1C1642; --accent:#6B45FF; --accent-ink:#FFFFFF;
+  --sun:#FFC83D; --coral:#FF5D7A; --face:#1C1642;
+  --sky:#2D9CFF; --mint:#19C79B; --pink:#FF7ACB;
+  --coral-bg:#FFE0E6; --sky-bg:#D6ECFF; --mint-bg:#D3F6E8; --sun-bg:#FFF0C2; --pink-bg:#FFE0F3; --vio-bg:#E4DCFF;
+  --sun-ink:#8A5F00; --coral-ink:#C42340; --mint-ink:#0B7F5F; --sky-ink:#0B64B8; --pink-ink:#AD1A78; --vio-ink:#5B35E6;
+  --good:#0B7F5F; --good-bg:#D3F6E8; --bad:#C42340; --bad-bg:#FFDDE3;
+  --f-display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --f-body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#130F2B; --surface:#211C47; --surface2:#322B68; --ink:#F3F0FF; --muted:#B0AADF;
+  --line:#6A5ED0; --shadow:#06040F; --accent:#A18AFF; --accent-ink:#130F2B;
+  --coral:#FF7A92; --good:#44E0B3; --good-bg:#10372E; --bad:#FF7A91; --bad-bg:#45192A; --sky:#5BB6FF; --mint:#3EDDB0; --pink:#FF8FD6; --coral-bg:#45192A; --sky-bg:#142C4D; --mint-bg:#10372E; --sun-bg:#43370F; --pink-bg:#472043; --vio-bg:#322B68; --sun-ink:#FFC83D; --coral-ink:#FF7A92; --mint-ink:#44E0B3; --sky-ink:#6CC0FF; --pink-ink:#FF8FD6; --vio-ink:#A18AFF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#130F2B; --surface:#211C47; --surface2:#322B68; --ink:#F3F0FF; --muted:#B0AADF;
+  --line:#6A5ED0; --shadow:#06040F; --accent:#A18AFF; --accent-ink:#130F2B;
+  --coral:#FF7A92; --good:#44E0B3; --good-bg:#10372E; --bad:#FF7A91; --bad-bg:#45192A; --sky:#5BB6FF; --mint:#3EDDB0; --pink:#FF8FD6; --coral-bg:#45192A; --sky-bg:#142C4D; --mint-bg:#10372E; --sun-bg:#43370F; --pink-bg:#472043; --vio-bg:#322B68; --sun-ink:#FFC83D; --coral-ink:#FF7A92; --mint-ink:#44E0B3; --sky-ink:#6CC0FF; --pink-ink:#FF8FD6; --vio-ink:#A18AFF; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;min-height:100vh}
+.app{max-width:1120px;margin:0 auto;padding-block:12px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:20px}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* progress track */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding-block:8px 4px}
+.top-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.brand{font:800 1.15rem var(--f-display);letter-spacing:-.01em}
+.where{font-size:.9rem;color:var(--muted);font-weight:500}
+.track{position:relative;height:46px;margin-inline:18px}
+.track::before{content:"";position:absolute;left:0;right:0;top:23px;height:6px;margin-top:-3px;border-radius:9px;background:var(--surface2)}
+.fill{position:absolute;left:0;top:23px;height:6px;margin-top:-3px;border-radius:9px;background:var(--accent);transition:width .6s cubic-bezier(.5,1.4,.4,.9)}
+.dot{position:absolute;top:23px;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);background:var(--surface);border:2.5px solid var(--line);padding:0;cursor:pointer}
+.dot.done{background:var(--dc,var(--accent))}
+.runner{position:absolute;top:23px;width:40px;height:40px;transform:translate(-50%,-54%);z-index:2;transition:left .6s cubic-bezier(.5,1.4,.4,.9);pointer-events:none}
+.runner svg{width:100%;height:100%;display:block;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+
+/* stage */
+.stage{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+.guide{position:sticky;top:calc(env(safe-area-inset-top,0px) + 100px);display:flex;flex-direction:column;gap:14px;align-items:center}
+.mochi{width:200px;max-width:100%;overflow:visible}
+.mochi.hop{animation:hop .55s ease}
+@keyframes hop{30%{transform:translateY(-16px) scale(.96,1.05)}60%{transform:translateY(0) scale(1.05,.95)}}
+.bubble{position:relative;background:var(--surface);border:2.5px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:4px 4px 0 var(--shadow);font-size:.98rem;font-weight:500;min-height:3.2em}
+.bubble::before{content:"";position:absolute;top:-11px;left:50%;width:18px;height:18px;background:var(--surface);border-left:2.5px solid var(--line);border-top:2.5px solid var(--line);transform:translateX(-50%) rotate(45deg)}
+.bubble.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}}
+
+.scene{min-width:0;display:flex;flex-direction:column;gap:18px;animation:in .4s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}}
+.kicker{font:700 .8rem var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--sc-ink,var(--accent))}
+h1,h2,h3{font-family:var(--f-display);margin:0;letter-spacing:-.02em;text-wrap:balance;line-height:1.05}
+h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:800}
+h2{font-size:clamp(1.9rem,4.4vw,2.9rem);font-weight:800}
+h3{font-size:1.2rem;font-weight:700;line-height:1.2}
+p{margin:0}
+.lead{font-size:1.15rem;max-width:60ch;color:var(--muted)}
+.card{background:var(--surface);border:2.5px solid var(--line);border-radius:18px;box-shadow:5px 5px 0 var(--shadow);padding:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:16px}
+.btn{font-weight:700;font-size:1rem;padding:.65rem 1.15rem;background:var(--surface);border:2.5px solid var(--line);border-radius:999px;box-shadow:3px 3px 0 var(--shadow);cursor:pointer;transition:transform .1s,box-shadow .1s}
+.btn:hover:not(:disabled){transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--shadow)}
+.btn:active:not(:disabled){transform:translate(3px,3px);box-shadow:0 0 0 var(--shadow)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.big{font-size:1.15rem;padding:.85rem 1.6rem;align-self:flex-start}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.talk{border:2.5px dashed var(--line);border-radius:18px;padding:12px 16px;display:flex;flex-direction:column;gap:2px;background:transparent}
+.talk b{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.verdict{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;font-size:.95rem;border:2px solid}
+.verdict.show{display:block}
+.verdict.good{background:var(--good-bg);border-color:var(--good);color:var(--ink)}
+.verdict.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--ink)}
+.verdict strong{display:block;font-family:var(--f-display);font-size:1.05rem}
+.good strong{color:var(--good)} .bad strong{color:var(--bad)}
+.tally{font-weight:700;color:var(--muted)}
+
+/* intro */
+.roadmap{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.roadmap li{background:var(--surface);border:2.5px solid var(--line);border-radius:14px;padding:10px 14px;font-weight:500;font-size:.95rem}
+.roadmap b{display:block;font-family:var(--f-display);font-size:1.05rem}
+
+/* messages */
+.msg{display:flex;flex-direction:column;gap:10px}
+.msg .meta{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.msg .txt{background:var(--surface2);border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:1rem;overflow-wrap:anywhere}
+
+/* password */
+.pw{display:flex;flex-direction:column;gap:14px}
+.pw input{font:600 1.25rem var(--f-body);width:100%;padding:.7rem 1rem;border:2.5px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink)}
+.meter{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.meter i{height:14px;border-radius:7px;background:var(--surface2);border:2px solid var(--line);transition:background .25s}
+.meter[data-l="1"] i:nth-child(-n+1){background:var(--bad)}
+.meter[data-l="2"] i:nth-child(-n+2){background:var(--sun)}
+.meter[data-l="3"] i:nth-child(-n+3){background:var(--accent)}
+.meter[data-l="4"] i{background:var(--good)}
+.pw-out{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pw-out strong{font:800 1.4rem var(--f-display)}
+.chip{font-weight:600;font-size:.9rem;padding:.35rem .8rem;border:2px solid var(--line);border-radius:999px;background:var(--surface);cursor:pointer}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.rules li{padding:12px 14px;background:var(--surface);border:2.5px solid var(--line);border-radius:14px;font-size:.95rem}
+.rules b{display:block;font-family:var(--f-display);font-size:1.05rem}
+
+/* 2FA */
+.flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:stretch}
+.node{border:2.5px solid var(--line);border-radius:16px;padding:12px;background:var(--surface);text-align:center;display:flex;flex-direction:column;gap:4px;justify-content:center;min-height:112px;transition:background .3s,border-color .3s}
+.node small{font-size:.82rem;color:var(--muted)}
+.node b{font-family:var(--f-display);font-size:1.05rem}
+.node.hit{background:var(--bad-bg);border-color:var(--bad)}
+.node.stop{background:var(--good-bg);border-color:var(--good)}
+.node.idle{opacity:.55}
+.switch{display:inline-flex;align-items:center;gap:10px;font-weight:700;cursor:pointer}
+.switch input{position:absolute;opacity:0}
+.switch .sl{width:54px;height:30px;border-radius:999px;border:2.5px solid var(--line);background:var(--surface2);position:relative;transition:background .2s}
+.switch .sl::after{content:"";position:absolute;left:2px;top:2px;width:21px;height:21px;border-radius:50%;background:var(--ink);transition:transform .2s}
+.switch input:checked + .sl{background:var(--good)}
+.switch input:checked + .sl::after{transform:translateX(24px);background:#fff}
+.switch input:focus-visible + .sl{outline:3px solid var(--accent);outline-offset:3px}
+
+/* post */
+.post{display:flex;flex-direction:column;gap:12px}
+.post p.q{font-size:1.02rem}
+
+/* chat */
+.chat{display:flex;flex-direction:column;gap:10px}
+.bub{max-width:88%;padding:10px 14px;border-radius:16px;font-size:1rem}
+.bub.them{background:var(--surface2);border-bottom-left-radius:4px;align-self:flex-start}
+.bub.me{background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px;align-self:flex-end}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{text-align:left;font-weight:600;padding:.7rem 1rem;background:var(--surface);border:2.5px solid var(--line);border-radius:14px;cursor:pointer;box-shadow:3px 3px 0 var(--shadow)}
+.opt[aria-pressed="true"]{background:var(--surface2)}
+.flags{display:flex;gap:8px;flex-wrap:wrap}
+.flags span{background:var(--bad-bg);border:2px solid var(--bad);border-radius:999px;padding:.25rem .8rem;font-size:.9rem;font-weight:600}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.step{text-align:left;background:var(--surface);border:2.5px solid var(--line);border-radius:18px;padding:16px;box-shadow:5px 5px 0 var(--shadow);cursor:pointer;display:flex;flex-direction:column;gap:8px}
+.step .n{width:34px;height:34px;border-radius:50%;background:var(--sun);color:#1C1642;border:2.5px solid var(--line);display:grid;place-items:center;font:800 1rem var(--f-display)}
+.step .emo{font-size:2.2rem;line-height:1;min-height:2.2rem}
+.step .def{font-size:.95rem}
+.step .more strong{color:var(--ink)}
+.step .more{display:none;font-size:.95rem;color:var(--muted)}
+.step[aria-expanded="true"] .more{display:block}
+.step[aria-expanded="true"]{background:var(--surface2)}
+.sos{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--accent);color:var(--accent-ink);border-color:var(--line)}
+.sos .num{font:800 clamp(3rem,9vw,4.6rem) var(--f-display);line-height:1}
+.sos .btn{color:var(--ink)}
+
+/* battery */
+.batt-wrap{display:flex;align-items:center;gap:14px}
+.batt{flex:1;height:44px;border:3px solid var(--line);border-radius:12px;padding:4px;position:relative;background:var(--bg)}
+.batt::after{content:"";position:absolute;right:-12px;top:11px;width:8px;height:16px;background:var(--line);border-radius:0 4px 4px 0}
+.batt i{display:block;height:100%;border-radius:6px;background:var(--good);transition:width .4s,background .3s;width:50%}
+.batt-pct{font:800 1.8rem var(--f-display);min-width:3.6ch;text-align:right;font-variant-numeric:tabular-nums}
+.habits{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px}
+.habit{display:flex;gap:12px;align-items:center;padding:12px 14px;background:var(--surface);border:2.5px solid var(--line);border-radius:14px;cursor:pointer;font-weight:500;font-size:.97rem}
+.habit input{width:22px;height:22px;accent-color:var(--accent);flex:none}
+.habit em{margin-left:auto;font-style:normal;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.habit.up em{color:var(--good)} .habit.down em{color:var(--bad)}
+
+/* pact */
+.pact{display:flex;flex-direction:column;gap:10px}
+.badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:12px}
+.badge{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:14px 8px;border:2.5px dashed var(--line);border-radius:16px;font-size:.88rem;opacity:.5}
+.badge b{font-family:var(--f-display);font-size:1rem;line-height:1.1}
+.badge .coin{width:46px;height:46px;border-radius:50%;background:var(--surface2);border:2.5px solid var(--line);display:grid;place-items:center;font:800 1.2rem var(--f-display)}
+.badge.on{opacity:1;border-style:solid;background:var(--surface);box-shadow:4px 4px 0 var(--shadow)}
+.badge.on .coin{background:var(--sun);color:#1C1642}
+
+/* range, segmented choices, sleep gauge */
+input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg .btn{padding:.4rem .9rem;font-size:.92rem}
+.btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.feat{display:flex;flex-direction:column;gap:10px}
+.feat p{font-size:.95rem;color:var(--muted)}
+.feat p b{color:var(--ink)}
+.sleep{display:flex;flex-direction:column;gap:14px}
+.sleep .ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px}
+.sleep label{display:flex;flex-direction:column;gap:2px;font-weight:700;font-size:.92rem}
+.sleep label b{font:800 1.3rem var(--f-display);font-variant-numeric:tabular-nums}
+.sleep label.switch{flex-direction:row;align-items:center;gap:10px;font-size:1rem}
+.sleep select{font:600 1rem var(--f-body);padding:.5rem .7rem;border:2.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+.sbar{position:relative;height:30px;border:2.5px solid var(--line);border-radius:10px;background:var(--surface2);margin-top:6px}
+.sband{position:absolute;top:0;bottom:0;background:var(--good-bg);border-inline:2px solid var(--good)}
+.smark{position:absolute;top:-7px;bottom:-7px;width:7px;border-radius:4px;background:var(--accent);border:2px solid var(--line);transform:translateX(-50%);transition:left .3s}
+.saxis{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* illustrations, colour themes, fake-news lab */
+.t-vio{--sc:var(--accent);--sc-bg:var(--vio-bg);--sc-ink:var(--vio-ink)}
+.t-coral{--sc:var(--coral);--sc-bg:var(--coral-bg);--sc-ink:var(--coral-ink)}
+.t-sun{--sc:var(--sun);--sc-bg:var(--sun-bg);--sc-ink:var(--sun-ink)}
+.t-mint{--sc:var(--mint);--sc-bg:var(--mint-bg);--sc-ink:var(--mint-ink)}
+.t-sky{--sc:var(--sky);--sc-bg:var(--sky-bg);--sc-ink:var(--sky-ink)}
+.t-pink{--sc:var(--pink);--sc-bg:var(--pink-bg);--sc-ink:var(--pink-ink)}
+.banner{width:100%;height:150px;display:block;border:2.5px solid var(--line);border-radius:18px;background:var(--sc-bg);box-shadow:5px 5px 0 var(--shadow)}
+.rules li,.roadmap li{border-top-width:6px;border-top-color:var(--sc,var(--line))}
+.roadmap li{display:flex;gap:10px;align-items:center}
+.mi{flex:none;width:38px;height:38px;display:block}
+.mi svg{width:100%;height:100%;display:block}
+.hl{background:linear-gradient(transparent 58%,var(--sun-bg) 58%);padding-inline:.08em}
+.fake{display:flex;flex-direction:column;gap:12px}
+.hot{text-align:left;border:2.5px dashed var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);cursor:pointer;font:inherit;color:var(--ink);display:flex;flex-direction:column;gap:4px}
+.hot b{font-family:var(--f-display)}
+.hot .clue{display:none;font-size:.92rem;color:var(--muted);font-weight:500}
+.hot[aria-pressed="true"]{border-style:solid;background:var(--sun-bg)}
+.hot[aria-pressed="true"] .clue{display:block}
+.fimg{height:70px;border-radius:8px;background:repeating-linear-gradient(45deg,var(--surface2),var(--surface2) 10px,var(--bg) 10px,var(--bg) 20px);display:grid;place-items:center;font-size:.85rem;color:var(--muted);filter:blur(.6px)}
+.shbar{height:18px;border:2.5px solid var(--line);border-radius:9px;background:var(--surface2);overflow:hidden}
+.shbar i{display:block;height:100%;background:var(--coral);width:0;transition:width .4s}
+
+/* attention lab */
+.feedcard{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;background:var(--sc-bg);border:2.5px solid var(--line);border-radius:16px;padding:18px}
+.feedcard .big{font-size:3.2rem;line-height:1}
+.feedcard.swap{animation:pop .3s ease}
+.lock{opacity:.4;filter:blur(2.5px);transition:opacity .4s,filter .4s}
+.opts.row{flex-direction:row}
+
+/* badge toasts */
+#toasts{position:fixed;left:0;right:0;bottom:calc(84px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;z-index:50;padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.toast{display:flex;gap:12px;align-items:center;background:var(--surface);border:2.5px solid var(--line);border-radius:16px;box-shadow:5px 5px 0 var(--shadow);padding:10px 16px;max-width:420px;animation:toastin .45s cubic-bezier(.3,1.6,.5,1);transition:opacity .4s,transform .4s}
+.toast .coin{width:44px;height:44px;border-radius:50%;background:var(--sun);color:#1C1642;border:2.5px solid var(--line);display:grid;place-items:center;font:800 1.2rem var(--f-display);flex:none}
+.toast small{display:block;color:var(--muted);font-size:.85rem}
+.toast.out{opacity:0;transform:translateY(10px)}
+@keyframes toastin{from{opacity:0;transform:translateY(20px) scale(.9)}}
+
+[data-pact="0"] .if-pact{display:none!important}
+[data-pact="1"] .if-nopact{display:none!important}
+
+/* bottom nav */
+.nav{position:sticky;bottom:0;z-index:15;display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:12px;background:var(--bg);padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.counter{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+
+@media (max-width:820px){
+  .stage{grid-template-columns:1fr;gap:18px}
+  .guide{position:static;flex-direction:row;align-items:center;gap:14px}
+  .mochi{width:96px;flex:none}
+  .bubble{flex:1;min-width:0;font-size:.92rem}
+  .bubble::before{top:50%;left:-11px;transform:translateY(-50%) rotate(-45deg)}
+  .banner{height:104px}
+  .flow{grid-template-columns:1fr}
+  .node{min-height:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mini" viewBox="0 0 160 170">
+    <line x1="80" y1="30" x2="80" y2="12" stroke="#1C1642" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="80" cy="10" r="9" fill="#FF5D7A" stroke="#1C1642" stroke-width="5"/>
+    <path d="M80 30C120 30 142 60 142 98C142 132 118 150 80 150C42 150 18 132 18 98C18 60 40 30 80 30Z" fill="#FFC83D" stroke="#1C1642" stroke-width="7"/>
+    <circle cx="58" cy="92" r="10" fill="#1C1642"/><circle cx="102" cy="92" r="10" fill="#1C1642"/>
+  </symbol>
+</svg>
+
+<div class="app">
+  <header class="top">
+    <div class="top-row"><span class="brand">Le voyage de Séleirine</span><span class="where" id="where"></span><span class="where" id="bc"></span></div>
+    <div class="track" id="track" role="navigation" aria-label="Étapes du voyage">
+      <div class="fill" id="fill"></div>
+      <div class="runner" id="runner"><svg viewBox="0 0 160 170" aria-hidden="true"><use href="#mini"/></svg></div>
+    </div>
+  </header>
+
+  <main class="stage">
+    <aside class="guide" aria-live="polite">
+      <svg class="mochi" id="mochi" viewBox="0 0 160 172" role="img" aria-label="Séleirine, la mascotte">
+        <ellipse cx="80" cy="164" rx="46" ry="6" fill="var(--shadow)" opacity=".25"/>
+        <line x1="80" y1="32" x2="80" y2="14" stroke="var(--face)" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="80" cy="11" r="8" fill="var(--coral)" stroke="var(--face)" stroke-width="4"/>
+        <ellipse cx="58" cy="152" rx="15" ry="9" fill="var(--sun)" stroke="var(--face)" stroke-width="4"/>
+        <ellipse cx="102" cy="152" rx="15" ry="9" fill="var(--sun)" stroke="var(--face)" stroke-width="4"/>
+        <path d="M80 30C120 30 142 60 142 98C142 132 118 150 80 150C42 150 18 132 18 98C18 60 40 30 80 30Z" fill="var(--sun)" stroke="var(--face)" stroke-width="5"/>
+        <path d="M44 56C52 44 64 38 76 36" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+        <ellipse cx="42" cy="106" rx="9" ry="6" fill="var(--coral)" opacity=".55"/>
+        <ellipse cx="118" cy="106" rx="9" ry="6" fill="var(--coral)" opacity=".55"/>
+        <g id="face"></g>
+      </svg>
+      <div class="bubble" id="bubble"></div>
+    </aside>
+
+    <div id="scenes">
+
+      <!-- 0 intro -->
+      <section class="scene" data-scene="0">
+        <p class="kicker">Pour toute la famille</p>
+        <h1>Le voyage de <span class="hl">Séleirine</span></h1>
+        <p class="lead">Séleirine vit dans un téléphone. Aujourd'hui, elle traverse quinze étapes pour apprendre à ne pas se faire piéger en ligne. Vous l'aidez à chaque fois.<span class="if-pact"> À la fin, on signe un pacte de famille.</span><span class="if-nopact"> En chemin, elle gagne des badges.</span></p>
+        <ul class="roadmap" id="roadmap"></ul>
+        <button class="btn primary big" data-next>Partir avec Séleirine</button>
+        <div class="talk"><b>Règle du jeu</b><span>Ici, personne n'est jugé. Les adultes aussi se font avoir, et ils répondent comme les autres.</span></div>
+      </section>
+
+      <!-- 1 phishing -->
+      <section class="scene" data-scene="1" hidden>
+        <p class="kicker">Étape 1 · Les messages piégés</p>
+        <h2>Vrai message ou piège&nbsp;?</h2>
+        <p class="lead">Quatre messages arrivent sur le téléphone de Séleirine. Un seul est vrai. À vous de trier.</p>
+        <div class="grid" id="phish"></div>
+        <p class="tally" id="phishTally"></p>
+        <div class="talk"><b>À discuter</b><span>Quelqu'un a déjà reçu un message comme ça ? Qu'est-ce qui vous a mis la puce à l'oreille ?</span></div>
+      </section>
+
+      <!-- 2 passwords -->
+      <section class="scene" data-scene="2" hidden>
+        <p class="kicker">Étape 2 · Les mots de passe</p>
+        <h2>Le coffre-fort de Séleirine</h2>
+        <p class="lead">Teste un mot de passe inventé pour voir combien de temps un ordinateur mettrait à le deviner. N'écris jamais ton vrai mot de passe dans un test, même ici.</p>
+        <div class="card pw">
+          <label for="pwtest" class="kicker">Mot de passe d'essai</label>
+          <input id="pwtest" type="text" autocomplete="off" spellcheck="false" placeholder="Invente-en un pour tester">
+          <div class="row" id="pwChips"></div>
+          <div class="meter" id="meter" data-l="0"><i></i><i></i><i></i><i></i></div>
+          <div class="pw-out"><strong id="pwLabel">Tape quelque chose</strong><span id="pwTime" class="tally"></span></div>
+          <div class="row"><button class="btn" id="pwGen">Une idée de phrase de passe</button><span class="tally" id="pwGenNote"></span></div>
+        </div>
+        <ul class="rules">
+          <li><b>Long bat compliqué</b>Quatre mots sans lien valent mieux que « P@ssw0rd! ».</li>
+          <li><b>Un compte, un mot de passe</b>S'il fuite d'un site, les pirates l'essaient partout ailleurs.</li>
+          <li><b>Un gestionnaire</b>Une appli retient tout à ta place. Tu n'as plus qu'un seul mot de passe à retenir.</li>
+          <li><b>Pas de partage</b>Même avec ton meilleur ami ou ta meilleure amie. Les amitiés changent.</li>
+        </ul>
+        <div class="talk"><b>À discuter</b><span>Combien de comptes ont le même mot de passe à la maison ? Réponse honnête, zéro punition.</span></div>
+      </section>
+
+      <!-- 3 2FA -->
+      <section class="scene" data-scene="3" hidden>
+        <p class="kicker">Étape 3 · La double vérification</p>
+        <h2>Deux clés valent mieux qu'une</h2>
+        <p class="lead">Un pirate a trouvé le mot de passe de Séleirine. Active ou non la double vérification, puis regarde ce qui se passe.</p>
+        <div class="card" style="display:flex;flex-direction:column;gap:16px">
+          <div class="row" style="justify-content:space-between">
+            <label class="switch"><input type="checkbox" id="tfa" role="switch"><span class="sl"></span><span id="tfaLabel">Double vérification : désactivée</span></label>
+            <button class="btn primary" id="tfaRun">Le pirate essaie d'entrer</button>
+          </div>
+          <div class="flow" id="flow">
+            <div class="node idle" id="n1"><b>1. Mot de passe</b><small>Le pirate l'a déjà</small></div>
+            <div class="node idle" id="n2"><b>2. Code du téléphone</b><small>Reçu uniquement par toi</small></div>
+            <div class="node idle" id="n3"><b>3. Compte de Séleirine</b><small>Photos, messages, contacts</small></div>
+          </div>
+          <p id="tfaOut" class="tally">Appuie sur le bouton pour lancer l'essai.</p>
+        </div>
+        <ul class="rules">
+          <li><b>Où l'activer</b>Messagerie, réseaux sociaux, boîte mail, jeux. Commence par l'adresse mail : elle ouvre tout le reste.</li>
+          <li><b>Appli plutôt que SMS</b>Une appli d'authentification est plus sûre qu'un code par SMS.</li>
+          <li><b>Codes de secours</b>Note-les sur papier et range-les à la maison.</li>
+        </ul>
+        <div class="talk"><b>À discuter</b><span>Sur quels comptes de la famille est-elle déjà activée ? Lesquels faut-il faire ce soir ?</span></div>
+      </section>
+
+      <!-- traces -->
+      <section class="scene" hidden>
+        <p class="kicker">Étape 4 · Traces et vie privée</p>
+        <h2>Qui peut voir Séleirine&nbsp;?</h2>
+        <p class="lead">Beaucoup de réglages sont ouverts par défaut. Verrouille ceux de Séleirine un par un et regarde son audience se réduire.</p>
+        <div class="card" style="display:flex;flex-direction:column;gap:12px">
+          <div class="meter" id="expMeter" data-l="1"><i></i><i></i><i></i><i></i></div>
+          <strong id="expLabel" style="font:800 1.4rem var(--f-display)"></strong>
+          <span class="tally" id="expSub"></span>
+        </div>
+        <div class="habits" id="priv"></div>
+        <ul class="rules">
+          <li><b>Si c'est gratuit, tu paies autrement</b>Les applis vivent de la pub. Plus elles en savent sur toi, plus elles gagnent. Ton attention et tes données sont le produit.</li>
+          <li><b>Rien ne s'efface vraiment</b>Une capture, un partage, une sauvegarde : un post supprimé existe peut-être déjà ailleurs.</li>
+          <li><b>Le droit de faire effacer</b>Tu peux demander à un site de supprimer tes données. La CNIL explique comment faire et aide quand un site refuse.</li>
+          <li><b>Les photos de famille aussi</b>Les parents postent parfois des photos de leurs enfants. Demander l'avis de la personne avant de publier vaut pour tout le monde à la maison.</li>
+        </ul>
+        <div class="talk"><b>À discuter</b><span>Quels réglages faut-il verrouiller ce soir, sur quels comptes ? Et quelles photos de famille ne devraient plus être en public ?</span></div>
+      </section>
+
+      <!-- 4 post -->
+      <section class="scene" data-scene="4" hidden>
+        <p class="kicker">Étape 5 · Ce qu'on poste</p>
+        <h2>Poster ou garder pour soi&nbsp;?</h2>
+        <p class="lead">Ce qui est posté peut être capturé, copié et ressortir dans cinq ans. Pour chaque cas, décide.</p>
+        <div class="grid" id="posts"></div>
+        <p class="tally" id="postTally"></p>
+        <div class="talk"><b>À discuter</b><span>Y a-t-il une photo de vous en ligne que vous aimeriez retirer ? Comment on s'y prend ?</span></div>
+      </section>
+
+      <!-- infos / IA -->
+      <section class="scene" hidden>
+        <p class="kicker">Étape 6 · Infos, IA et faux profils</p>
+        <h2>Fiable, douteux ou fabriqué&nbsp;?</h2>
+        <p class="lead">Une photo, une voix ou un profil peuvent être fabriqués par une IA en quelques minutes. Pour chaque situation, juge : fiable ou douteux ?</p>
+        <h3>Enquête : examine ce post avant de le partager</h3>
+        <div class="card fake">
+          <p class="tally" style="font-weight:500">Exemple inventé. Touche chaque élément pour voir ce qui cloche.</p>
+          <button class="hot" aria-pressed="false"><span>InfoVrai_Officiel_77</span><span class="clue">Un nom qui fait officiel, mais aucun média ni aucune personne derrière. Le compte a été créé il y a trois jours.</span></button>
+          <button class="hot" aria-pressed="false"><b>🚨 URGENT 🚨 COLLÈGE FERMÉ DEMAIN : ALERTE CHIMIQUE !!!</b><span class="clue">Majuscules, sirènes, points d'exclamation : c'est fait pour te faire peur et réagir vite, pas pour t'informer.</span></button>
+          <button class="hot" aria-pressed="false"><span class="fimg">photo floue, sans légende ni date</span><span class="clue">Une image sans date ni lieu peut venir d'un autre événement. Une recherche d'image inversée montre souvent d'où elle vient.</span></button>
+          <button class="hot" aria-pressed="false"><span>« Selon un ami d'un ami, les pompiers sont déjà sur place. »</span><span class="clue">Une source de source de source : impossible à vérifier. Rien sur le site du collège ni dans la presse locale.</span></button>
+          <button class="hot" aria-pressed="false"><b>Partage à tous tes contacts avant ce soir !</b><span class="clue">C'est le moteur de l'intox. Une vraie alerte passe par les canaux officiels, pas par une chaîne de partages.</span></button>
+          <p class="tally" id="fakeTally">0 indice trouvé sur 5</p>
+        </div>
+        <div class="card fake">
+          <h3>Et si tu partages&nbsp;?</h3>
+          <p class="tally" style="font-weight:500">Exemple simplifié : chaque personne le partage à 2 amis.</p>
+          <div class="row"><button class="btn primary" id="shBtn">Partager à 2 amis</button><button class="btn" id="shStop">Vérifier d'abord</button></div>
+          <div class="shbar" aria-hidden="true"><i id="shFill"></i></div>
+          <strong id="shNum" style="font:800 1.4rem var(--f-display)"></strong>
+          <p class="tally" style="font-weight:500">Le démenti arrive toujours après l'intox. Celui qui vérifie avant de partager arrête la chaîne.</p>
+        </div>
+        <h3>Situations à juger</h3>
+        <div class="grid" id="infos"></div>
+        <p class="tally" id="infoTally"></p>
+        <ul class="rules">
+          <li><b>Qui parle ?</b>Un nom, un média, une date. Sans source, méfiance.</li>
+          <li><b>D'où ça vient ?</b>Une recherche d'image inversée montre souvent l'origine d'une photo.</li>
+          <li><b>Ailleurs aussi ?</b>Une vraie info est reprise par plusieurs sources sérieuses.</li>
+          <li><b>Ça joue sur mes émotions ?</b>Colère, peur, urgence : c'est fait pour que tu partages sans réfléchir.</li>
+          <li><b>Et les IA ?</b>Elles se trompent et inventent avec aplomb. Ce que tu leur écris peut être conservé : pas d'infos privées, les tiennes ou celles des autres.</li>
+        </ul>
+        <div class="talk"><b>À discuter</b><span>Avez-vous déjà partagé quelque chose qui s'est avéré faux ? Quel mot de code pourrait-on avoir en famille pour vérifier une demande urgente par vocal ?</span></div>
+      </section>
+
+      <!-- jeux en ligne -->
+      <section class="scene" hidden>
+        <p class="kicker">Étape 7 · Jeux en ligne et achats</p>
+        <h2>La boutique du jeu</h2>
+        <p class="lead">Un jeu gratuit n'est pas toujours gratuit. Beaucoup gagnent de l'argent avec les achats intégrés, et leurs boutiques sont conçues pour faire dépenser vite. Pour chaque situation : choix réfléchi ou piège ?</p>
+        <div class="grid" id="games"></div>
+        <p class="tally" id="gameTally"></p>
+        <div class="card" style="display:flex;flex-direction:column;gap:10px">
+          <label for="spend" class="kicker">Si on dépense chaque semaine…</label>
+          <input type="range" id="spend" min="0" max="30" step="1" value="5">
+          <div class="pw-out"><strong id="spendV"></strong><span class="tally" id="spendEq"></span></div>
+        </div>
+        <ul class="rules">
+          <li><b>Convertis en euros</b>Gemmes, crédits, V-Bucks : une monnaie virtuelle fait perdre la notion du prix réel. Calcule toujours en euros.</li>
+          <li><b>Pas de carte enregistrée</b>Sans carte bancaire mémorisée, pas d'achat par réflexe. Une carte prépayée fixe le budget d'avance.</li>
+          <li><b>Vocal et chat</b>Tu peux couper le micro, bloquer et signaler. Pseudo sans prénom ni école, et jamais de compte prêté.</li>
+          <li><b>Un achat par erreur ?</b>Ne le cache pas. Un achat fait par erreur par un mineur peut parfois être contesté auprès de la plateforme ou de la banque : agir vite aide.</li>
+          <li><b>Le logo PEGI</b>Il indique l'âge conseillé, et signale les achats intégrés et le hasard payant.</li>
+        </ul>
+        <div class="talk"><b>À discuter</b><span>Combien la famille dépense-t-elle par mois dans les jeux, tout compris ? Quel budget fixe-t-on ensemble, et qui peut le dépasser ?</span></div>
+      </section>
+
+      <!-- 5 stranger -->
+      <section class="scene" data-scene="5" hidden>
+        <p class="kicker">Étape 8 · Les inconnu·es</p>
+        <h2>« Salut, tu fais quoi ? »</h2>
+        <p class="lead">Un compte inconnu écrit à Séleirine. Choisis une réaction et regarde ce qui se passe. Tu peux tout essayer.</p>
+        <div class="card chat">
+          <div class="bub them">yo t'as quel âge ? t'es trop stylé sur ta photo 😍</div>
+          <div class="bub them">on passe sur une autre appli ? c'est plus discret, dis rien à tes parents</div>
+        </div>
+        <div class="opts" id="opts">
+          <button class="opt" data-o="0" aria-pressed="false">Répondre : « j'ai 12 ans, et toi ? »</button>
+          <button class="opt" data-o="1" aria-pressed="false">Répondre : « t'es qui ? on se connaît ? »</button>
+          <button class="opt" data-o="2" aria-pressed="false">Ne pas répondre, bloquer, et montrer à un adulte</button>
+        </div>
+        <div class="verdict" id="strV"></div>
+        <div class="flags" aria-label="Signaux d'alerte"><span>Demande ton âge</span><span>Veut changer d'appli</span><span>Demande de garder un secret</span><span>Flatterie dès le début</span></div>
+        <div class="talk"><b>À discuter</b><span>Un inconnu a-t-il déjà écrit à l'un d'entre vous ? Comment avez-vous réagi ?</span></div>
+      </section>
+
+      <!-- images intimes -->
+      <section class="scene" hidden>
+        <p class="kicker">Étape 9 · Images intimes et chantage</p>
+        <h2>Une photo qui n'aurait pas dû partir</h2>
+        <div class="talk" style="border-style:solid"><b>Sujet sensible</b><span>On en parle calmement et sans détails. Personne n'a à raconter une histoire personnelle ici.</span></div>
+        <p class="lead">Ça commence souvent par de la confiance et des compliments, puis une demande de photo. Une fois l'image envoyée, elle peut servir à menacer. Voici une situation.</p>
+        <div class="card chat">
+          <div class="bub them">j'ai la photo que tu m'as envoyée</div>
+          <div class="bub them">envoie 50 € en carte cadeau sinon je la montre à toute ta classe</div>
+        </div>
+        <div class="opts" id="opts2">
+          <button class="opt" data-o="0" aria-pressed="false">Payer, pour que ça s'arrête</button>
+          <button class="opt" data-o="1" aria-pressed="false">Répondre, supplier, négocier</button>
+          <button class="opt" data-o="2" aria-pressed="false">Ne rien payer, ne plus répondre, garder les preuves, bloquer, en parler à un adulte</button>
+        </div>
+        <div class="verdict" id="intV"></div>
+        <ul class="rules">
+          <li><b>Ce n'est jamais ta faute</b>Avoir fait confiance n'est pas une faute. Celui qui menace commet l'infraction, pas la personne qui apparaît sur l'image.</li>
+          <li><b>La loi protège les mineurs</b>Menacer de diffuser une image intime, ou la diffuser sans accord, est puni. Ne transfère jamais une telle image, même pour « montrer ».</li>
+          <li><b>Si une photo circule déjà</b>Ne la partage pas, signale-la sur l'appli et sur internet-signalement.gouv.fr, et appelle le 3018 : ils aident à la faire supprimer.</li>
+        </ul>
+        <div class="card sos">
+          <span class="num">3018</span>
+          <div style="flex:1;min-width:200px"><h3>Tu peux appeler, même pour demander conseil</h3><p style="margin-top:4px">Gratuit et confidentiel. Si tu es en danger, le 119 (Enfance en danger) répond aussi.</p></div>
+          <button class="btn" id="copy3018b">Copier le numéro</button>
+        </div>
+        <div class="talk"><b>À discuter (surtout pour les adultes)</b><span>Si l'un de vous dit un jour « j'ai fait une bêtise », que répond-on ? Une idée : « Merci de me l'avoir dit. On règle ça ensemble. »</span></div>
+      </section>
+
+      <!-- amour et contrôle -->
+      <section class="scene" hidden>
+        <p class="kicker">Étape 10 · Amour et contrôle</p>
+        <h2>« Prouve-moi que tu m'aimes »</h2>
+        <p class="lead">Mot de passe, position, likes : certaines demandes ressemblent à de l'amour mais sont du contrôle. Pour chaque phrase, qu'en penses-tu ?</p>
+        <div class="grid" id="love"></div>
+        <p class="tally" id="loveTally"></p>
+        <ul class="rules">
+          <li><b>Réciproque ?</b>Les deux font la même chose, avec les mêmes droits.</li>
+          <li><b>Choisi librement ?</b>Personne ne l'a demandé sous pression ou en faisant culpabiliser.</li>
+          <li><b>Je peux dire non ?</b>Refuser ou arrêter n'a aucune conséquence. Sinon, ce n'est pas un vrai choix.</li>
+        </ul>
+        <div class="talk"><b>À discuter</b><span>Ça marche dans les deux sens : en demander autant à quelqu'un, c'est aussi du contrôle. Si ça te pèse, tu peux en parler à un adulte de confiance ou appeler le 3018.</span></div>
+      </section>
+
+      <!-- 6 harassment -->
+      <section class="scene" data-scene="6" hidden>
+        <p class="kicker">Étape 11 · Quand ça dérape</p>
+        <h2>Un groupe se moque de quelqu'un</h2>
+        <p class="lead">Dans une discussion de classe, des messages méchants visent une camarade. Que faire&nbsp;? Ouvre chaque étape.</p>
+        <div class="steps" id="steps">
+          <button class="step" aria-expanded="false"><span class="n">1</span><h3>Ne réponds pas à chaud</h3><span class="more">Écrire dans la colère envenime tout. Respire, pose le téléphone cinq minutes.</span></button>
+          <button class="step" aria-expanded="false"><span class="n">2</span><h3>Garde les preuves</h3><span class="more">Captures d'écran avec la date, le pseudo et le message. Ne supprime rien avant d'avoir tout sauvegardé.</span></button>
+          <button class="step" aria-expanded="false"><span class="n">3</span><h3>Bloque et signale</h3><span class="more">Chaque appli a un bouton pour signaler un message ou un compte. Utilise-le.</span></button>
+          <button class="step" aria-expanded="false"><span class="n">4</span><h3>Parle à un adulte</h3><span class="more">Un parent, un prof, l'infirmière scolaire. Dire « ça m'arrive » ou « j'ai vu » n'est pas balancer.</span></button>
+        </div>
+        <div class="card sos">
+          <span class="num">3018</span>
+          <div style="flex:1;min-width:200px"><h3>Le numéro contre le cyberharcèlement</h3><p style="margin-top:4px">Gratuit, confidentiel. On peut y parler de ce qu'on subit ou de ce qu'on a vu. Pour le harcèlement à l'école, il existe aussi le 3020.</p></div>
+          <button class="btn" id="copy3018">Copier le numéro</button>
+        </div>
+        <p class="lead" style="max-width:none"><b style="color:var(--ink)">Si tu es témoin :</b> ne ris pas, ne partage pas, et écris à la personne visée. Un seul message gentil change beaucoup de choses.</p>
+        <div class="talk"><b>À discuter</b><span>À quel adulte pourriez-vous en parler sans craindre d'être puni·e ? Les parents : qu'est-ce qu'on s'engage à répondre ?</span></div>
+      </section>
+
+      <!-- harcèlement et codes -->
+      <section class="scene" hidden>
+        <p class="kicker">Étape 12 · Harcèlement et codes</p>
+        <h2>Le langage secret des emojis</h2>
+        <p class="lead">Un emoji sert à se faire comprendre vite. Il sert aussi à dire sans écrire : se moquer, harceler, proposer des produits interdits, tester un mineur, échapper aux parents et à la modération. Les sens changent selon le groupe et les mois, donc aucune liste ne dure. Ouvre chaque carte.</p>
+        <div class="steps" id="codes"></div>
+        <p class="tally" id="codeOpen"></p>
+        <p class="tally" style="font-weight:500">Sources : article « Ces émojis au sens caché » (Bien vivre le digital, Orange, novembre 2026), qui cite le dictionnaire des émojis publié par e-Enfance, l'association du 3018.</p>
+
+        <h3>Blague, harcèlement ou à signaler&nbsp;?</h3>
+        <div class="grid" id="codeQuiz"></div>
+        <p class="tally" id="codeTally"></p>
+
+        <ul class="rules">
+          <li><b>Un emoji seul ne prouve rien</b>Un 🐑 ou une 💊 isolés ne sont pas une alerte. Regarde qui envoie, à qui, et combien de fois. Demande à la personne ce qu'elle voulait dire.</li>
+          <li><b>Ciblé, répété, en groupe</b>Quand les trois sont réunis, c'est du harcèlement, même « pour rire » et même sans un mot écrit.</li>
+          <li><b>Pourquoi des codes ?</b>Pour échapper à la modération des applis, aux parents et à la loi. Une menace ou une vente codée reste une menace ou une vente.</li>
+          <li><b>Si c'est toi qui l'envoies</b>Copier un emoji qui vise quelqu'un te rend participant·e. Un clic de plus dans la foule fait du mal.</li>
+          <li><b>Pour les adultes</b>Demandez « c'est quoi, ce sens-là ? » plutôt que de confisquer. Ils le savent, et vous apprenez.</li>
+        </ul>
+        <div class="card sos">
+          <span class="num">3018</span>
+          <div style="flex:1;min-width:200px"><h3>Si ça te vise, ou si tu as vu</h3><p style="margin-top:4px">Le 3018 est gratuit et confidentiel. Si un message parle de se faire du mal, dis-le à un adulte tout de suite : le 3114 répond 24 h/24.</p></div>
+        </div>
+        <div class="talk"><b>À discuter</b><span>Quels emojis avez-vous dans vos conversations qui ont un autre sens que celui qu'un adulte imagine ? Cette page ne connaît que quelques codes : complétez-la avec ce que vous voyez.</span></div>
+      </section>
+
+      <!-- attention et cerveau -->
+      <section class="scene" hidden>
+        <p class="kicker">Étape 13 · Attention et cerveau</p>
+        <h2>Le scroll sans fin</h2>
+        <p class="lead">Vidéos courtes, lecture automatique, notifications : ces applis sont conçues pour qu'on reste. Voici ce qu'on sait, et ce qu'on ne sait pas encore, sur l'attention et un cerveau encore en construction.</p>
+
+        <div class="card fake">
+          <h3>Teste le scroll</h3>
+          <p class="tally" style="font-weight:500">Chaque vidéo dure environ 15 secondes. Fais défiler et regarde ce qui se débloque.</p>
+          <div class="feedcard" id="feedCard" aria-live="polite"><span class="big">📱</span><b>Appuie sur « Vidéo suivante »</b></div>
+          <div class="row"><button class="btn primary" id="swipe">Vidéo suivante</button><span class="tally" id="swipeInfo">0 vidéo</span></div>
+          <div id="memBox" hidden style="display:flex;flex-direction:column;gap:10px">
+            <h3 id="memQ"></h3>
+            <div class="opts" id="memOpts"></div>
+            <div class="verdict" id="memV"></div>
+          </div>
+        </div>
+        <ul class="rules" id="tricks">
+          <li class="lock" data-at="4"><b>Pas de fin</b>Le défilement infini n'a pas de dernière page : rien ne t'invite à t'arrêter.</li>
+          <li class="lock" data-at="7"><b>Lecture automatique</b>La suivante démarre toute seule. Arrêter demande une décision, continuer non.</li>
+          <li class="lock" data-at="10"><b>Récompense variable</b>Parfois une vidéo géniale, parfois nulle : comme une machine à sous, l'incertitude donne envie de relancer.</li>
+          <li class="lock" data-at="13"><b>Un algorithme qui apprend</b>Plus tu regardes, mieux l'appli devine ce qui te retiendra. C'est son travail.</li>
+        </ul>
+
+        <h3>Fait établi, lien observé ou exagération&nbsp;?</h3>
+        <div class="grid" id="attQuiz"></div>
+        <p class="tally" id="attTally"></p>
+
+        <div class="card fake">
+          <h3>Le défi des 60 secondes</h3>
+          <p class="tally" style="font-weight:500">Pose le téléphone, reste assis, regarde la barre. Chaque fois que tu as envie de le regarder, appuie sur le bouton. Tout le monde peut essayer.</p>
+          <div class="row"><button class="btn primary" id="chStart">Lancer le défi</button><strong id="chTime" style="font:800 1.4rem var(--f-display)">60 s</strong></div>
+          <div class="shbar" aria-hidden="true"><i id="chFill"></i></div>
+          <div class="row"><button class="btn" id="chUrge" disabled>J'ai eu envie de regarder mon téléphone</button><span class="tally" id="chCount"></span></div>
+          <p class="tally" id="chMsg" style="font-weight:500"></p>
+        </div>
+
+        <h3>Reprendre la main</h3>
+        <ul class="rules">
+          <li><b>Notifications triées</b>Garde celles des personnes, coupe celles des applis qui veulent juste te rappeler qu'elles existent.</li>
+          <li><b>Coupe la lecture automatique</b>Dans les réglages de l'appli. Une pause de plus pour décider.</li>
+          <li><b>Une chose à la fois</b>Devoirs sans téléphone dans la pièce. Même posé, il attire l'attention.</li>
+          <li><b>Décide avant d'ouvrir</b>« Quinze minutes, puis j'arrête. » Une minuterie aide.</li>
+          <li><b>Entraîne l'attention</b>Lire, jouer d'un instrument, un sport collectif, un jeu de société : des activités qui demandent un effort suivi.</li>
+          <li><b>Les adultes aussi</b>Le scroll n'a pas d'âge. Les règles valent pour tout le monde à la maison.</li>
+        </ul>
+        <p class="tally" style="font-weight:500">Repère : la plupart des études sur le sujet observent des liens sans prouver la cause, et la recherche avance vite. Les points établis sont ceux du quiz.</p>
+        <div class="talk"><b>À discuter</b><span>Combien de temps de scroll sans but par jour, chacun ? À quel moment de la journée est-ce le plus dur de s'arrêter ? Qu'est-ce qui nous ferait plus de bien à la place ?</span></div>
+      </section>
+
+      <!-- contrôle parental et sommeil -->
+      <section class="scene" hidden>
+        <p class="kicker">Étape 14 · Contrôle parental et temps d'écran</p>
+        <h2>Un cadre qui protège</h2>
+        <p class="lead">Chez l'enfant comme chez l'ado, ce sont les adultes qui posent le cadre numérique, comme la ceinture en voiture : ce n'est pas une option. Voici ce que fait le contrôle parental, pourquoi il est utile, et pourquoi la nuit est le point le plus important.</p>
+        <div class="grid" id="feats">
+          <div class="card feat"><h3>Limites de temps par appli</h3><p><b>Ce que ça fait.</b> Fixe un temps par jour pour certaines applis : « Temps d'écran » sur iPhone, « Bien-être numérique » ou Family Link sur Android.</p><p><b>Pourquoi.</b> Les applis sont conçues pour qu'on reste (étape 13). Une limite pose la fin que le scroll sans fin ne pose jamais.</p></div>
+          <div class="card feat"><h3>Heure de coucher</h3><p><b>Ce que ça fait.</b> Verrouille le téléphone la nuit, ou ne laisse passer que les appels des proches.</p><p><b>Pourquoi.</b> Le sommeil ne se gagne pas à la volonté : à minuit, personne ne résiste à une notification. C'est le réglage le plus important, voir plus bas.</p></div>
+          <div class="card feat"><h3>Validation des achats et des téléchargements</h3><p><b>Ce que ça fait.</b> Chaque achat ou nouvelle appli demande l'accord d'un adulte.</p><p><b>Pourquoi.</b> Achats intégrés, applis qui ne sont pas faites pour l'âge, arnaques : c'est le filet de sécurité (étape 7).</p></div>
+          <div class="card feat"><h3>Filtres selon l'âge</h3><p><b>Ce que ça fait.</b> Masque les contenus pour adultes et active la recherche sécurisée.</p><p><b>Pourquoi.</b> Les algorithmes proposent des contenus violents ou choquants sans qu'on les cherche.</p></div>
+          <div class="card feat"><h3>Position de la famille</h3><p><b>Ce que ça fait.</b> Les parents voient où est le téléphone, et l'ado le sait.</p><p><b>Pourquoi.</b> Pour la sécurité (retard, trajet, téléphone perdu) et pour réagir vite en cas de problème. Le réglage est connu de tous, jamais caché.</p></div>
+          <div class="card feat"><h3>Bilan d'activité</h3><p><b>Ce que ça fait.</b> Un résumé par semaine du temps passé, appli par appli.</p><p><b>Pourquoi.</b> Le temps réel surprend presque toujours. C'est un point de départ pour en parler, sans reproche.</p></div>
+        </div>
+        <ul class="rules">
+          <li><b>Expliqué, pas caché</b>Le cadre est annoncé et expliqué. Un réglage caché est souvent contourné, et abîme la confiance.</li>
+          <li><b>Qui évolue avec l'âge</b>Pour un enfant et pour un ado, ce n'est pas le même cadre. Il s'assouplit avec l'âge et la confiance.</li>
+          <li><b>Les adultes montrent l'exemple</b>Téléphone à table, dans la chambre, le soir : les règles de la maison valent pour tout le monde.</li>
+          <li><b>Un outil ne remplace pas la discussion</b>Aucun filtre n'arrête tout. Savoir qu'on peut parler sans être puni·e protège mieux.</li>
+        </ul>
+
+        <h2 style="margin-top:12px">Les copains de Séleirine</h2>
+        <p class="lead">Sur Snapchat, Séleirine voit que Maëlys, Jules et Inès sont encore connectés à 3 h 30, un mardi. Le réveil sonne à 6 h 45 pour aller en cours. Déplace l'heure de la dernière connexion pour voir ce que ça change.</p>
+        <div class="card sleep">
+          <label for="frOn">Dernière connexion<b id="frV"></b><input type="range" id="frOn" min="1320" max="1680" step="15" value="1650"></label>
+          <div>
+            <div class="sbar" aria-hidden="true"><div class="sband" id="frBand"></div><div class="smark" id="frMark"></div></div>
+            <div class="saxis" aria-hidden="true"><span>0 h</span><span>3 h</span><span>6 h</span><span>9 h</span><span>12 h</span></div>
+          </div>
+          <div class="pw-out"><strong id="frDur"></strong><span class="tally" id="frMsg"></span></div>
+          <p class="tally" id="frDebt" style="font-weight:500"></p>
+          <p class="tally" style="font-weight:500">La zone verte est la fourchette courante de 8 à 10 h de sommeil pour un ado de 13 à 18 ans.</p>
+        </div>
+        <ul class="rules">
+          <li><b>Un cerveau qui n'a pas fini de grandir</b>À l'adolescence, le sommeil sert à grandir, à fixer ce qu'on a appris et à gérer ses émotions. Il se rattrape mal le week-end.</li>
+          <li><b>Une horloge interne décalée</b>À cet âge, le corps a naturellement envie de se coucher plus tard. Sans cadre, la nuit s'allonge toute seule.</li>
+          <li><b>Ce que le manque de sommeil entraîne</b>Il est associé à moins d'attention et de mémoire, plus d'irritabilité, d'anxiété et de coups de blues, des notes en baisse, et plus d'accidents.</li>
+          <li><b>À 3 h du matin, on décide moins bien</b>Fatigue, moins de recul : plus de risques de discussions avec des inconnus, de contenus durs et de messages qu'on regrette.</li>
+          <li><b>La pression des messages et des flammes</b>Les séries de flammes et les messages qui arrivent la nuit donnent l'impression qu'il faut répondre tout de suite. Quand tous les téléphones sont verrouillés la nuit, personne ne rate rien.</li>
+          <li><b>Un cadre n'est pas une punition</b>C'est comme la ceinture ou le casque : une protection posée par des adultes responsables.</li>
+        </ul>
+
+        <h2 style="margin-top:12px">Et toi, combien de sommeil&nbsp;?</h2>
+        <p class="lead">Règle les heures de coucher et de lever pour voir si Séleirine dort assez.</p>
+        <div class="card sleep">
+          <div class="ctl">
+            <label for="slAge">Âge<select id="slAge"><option value="ado">13 à 18 ans</option><option value="jeune">6 à 12 ans</option></select></label>
+            <label for="slBed">Coucher<b id="slBedV"></b><input type="range" id="slBed" min="1200" max="1500" step="15" value="1410"></label>
+            <label for="slWake">Lever<b id="slWakeV"></b><input type="range" id="slWake" min="330" max="510" step="15" value="405"></label>
+          </div>
+          <div>
+            <div class="sbar" aria-hidden="true"><div class="sband" id="sBand"></div><div class="smark" id="sMark"></div></div>
+            <div class="saxis" aria-hidden="true"><span>0 h</span><span>3 h</span><span>6 h</span><span>9 h</span><span>12 h</span></div>
+          </div>
+          <div class="pw-out"><strong id="slDur"></strong><span class="tally" id="slMsg"></span></div>
+          <label class="switch"><input type="checkbox" id="slPhone"><span class="sl"></span><span>Le téléphone est utilisé au lit</span></label>
+          <p class="tally" id="slNote">Repères courants : 9 à 12 h de sommeil de 6 à 12 ans, 8 à 10 h de 13 à 18 ans.</p>
+        </div>
+        <ul class="rules">
+          <li><b>Le sommeil</b>Quand il manque, la concentration, la mémoire et l'humeur en pâtissent, et le corps récupère moins.</li>
+          <li><b>Les écrans le soir</b>Lumière, notifications, vidéos qui excitent : le cerveau reste en alerte et l'endormissement vient plus tard.</li>
+          <li><b>Les yeux</b>Règle 20-20-20 : toutes les 20 minutes, regarde quelque chose à 6 mètres pendant 20 secondes.</li>
+          <li><b>Le corps</b>L'OMS conseille au moins 60 minutes d'activité physique par jour à cet âge. Dos et nuque aiment aussi les pauses.</li>
+          <li><b>Pas de chiffre magique</b>Il n'existe pas de durée d'écran idéale pour tous. D'abord le sommeil, le mouvement, les repas, les ami·es en vrai et les devoirs ; le reste se négocie.</li>
+        </ul>
+        <div class="talk"><b>À discuter</b><span>Qu'est-ce qui vous paraît difficile dans ce cadre ? Les parents écoutent et expliquent : le principe reste, les détails peuvent s'ajuster. Où dort le téléphone chaque nuit, celui des adultes compris ?</span></div>
+      </section>
+
+      <!-- 7 battery -->
+      <section class="scene" data-scene="7" hidden>
+        <p class="kicker">Étape 15 · Les écrans et la fatigue</p>
+        <h2>La batterie de Séleirine</h2>
+        <p class="lead">Séleirine a 50&nbsp;% d'énergie. Coche les habitudes que vous avez vraiment, et regarde sa batterie bouger.</p>
+        <div class="card batt-wrap"><div class="batt" role="img" aria-label="Batterie"><i id="battBar"></i></div><span class="batt-pct" id="battPct">50%</span></div>
+        <div class="habits" id="habits"></div>
+        <p class="lead" style="max-width:none">Se sentir vidé après le scroll n'est pas un défaut de caractère. Les applis sont conçues pour retenir. Le repérer, c'est déjà reprendre la main.</p>
+        <div class="talk"><b>À discuter</b><span>Où dort le téléphone chaque nuit à la maison ? Et si on essayait autrement une semaine ?</span></div>
+      </section>
+
+      <!-- 8 pact -->
+      <section class="scene" data-scene="8" hidden>
+        <p class="kicker"><span class="if-pact">Arrivée · Le pacte de famille</span><span class="if-nopact">Arrivée</span></p>
+        <h2><span class="if-pact">Séleirine est arrivée. Et vous&nbsp;?</span><span class="if-nopact">Séleirine est arrivée&nbsp;!</span></h2>
+        <p class="lead if-nopact">Bravo, vous avez fait tout le voyage ensemble. Voici les badges gagnés en chemin.</p>
+        <p class="lead if-pact">Cochez les règles que la famille choisit. Pas toutes d'un coup : trois bien tenues valent mieux que toutes oubliées.</p>
+        <div class="pact card if-pact" id="pact"></div>
+        <p class="tally if-pact" id="pactTally"></p>
+        <h3>Les badges de Séleirine</h3>
+        <div class="badges" id="badges"></div>
+        <div class="card" style="display:flex;flex-direction:column;gap:10px">
+          <h3>Refaire le voyage</h3>
+          <p class="tally" style="font-weight:500">Pour rejouer ou passer la main à quelqu'un d'autre. Les badges gagnés<span class="if-pact"> et le pacte de famille</span> sont conservés.</p>
+          <div class="row"><button class="btn primary" id="resetBtn">Recommencer le voyage</button></div>
+          <p class="tally" id="resetMsg" style="font-weight:500">Pour tout effacer, c'est ici.</p>
+          <div class="row">
+            <button class="btn" id="wipeBtn">Tout effacer</button>
+            <button class="btn primary" id="wipeYes" hidden>Oui, tout effacer</button>
+            <button class="btn" id="wipeNo" hidden>Annuler</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="toasts" aria-live="polite"></div>
+
+  <footer class="nav">
+    <button class="btn" id="prev">Précédent</button>
+    <span class="counter" id="counter"></span>
+    <button class="btn primary" id="next">Suivant</button>
+  </footer>
+</div>
+
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+/* Pacte de famille : mis de côté pour l'instant. Passer PACT à true pour le rouvrir (texte, cases à cocher, badges liés). */
+const PACT=false;
+document.documentElement.dataset.pact=PACT?'1':'0';
+
+/* ---------- Séleirine ---------- */
+const sk='stroke="var(--face)" stroke-width="5" stroke-linecap="round" fill="none"';
+const eye=(x,y,r=7)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="var(--face)"/>`;
+const faces={
+  happy:eye(58,88)+eye(102,88)+`<path d="M62 108Q80 124 98 108" ${sk}/>`,
+  wow:eye(58,86,9)+eye(102,86,9)+`<circle cx="61" cy="83" r="3" fill="#fff"/><circle cx="105" cy="83" r="3" fill="#fff"/><ellipse cx="80" cy="116" rx="8" ry="10" fill="var(--face)"/>`,
+  worried:eye(58,90)+eye(102,90)+`<path d="M46 76L68 70M114 76L92 70" ${sk}/><path d="M64 120Q80 106 96 120" ${sk}/>`,
+  sleepy:`<path d="M50 90Q58 98 66 90M94 90Q102 98 110 90" ${sk}/><path d="M70 114H90" ${sk}/><text x="118" y="48" font-family="Bricolage Grotesque,sans-serif" font-weight="800" font-size="22" fill="var(--ink)">z</text><text x="132" y="30" font-family="Bricolage Grotesque,sans-serif" font-weight="800" font-size="16" fill="var(--ink)">z</text>`,
+  proud:`<path d="M50 92Q58 80 66 92M94 92Q102 80 110 92" ${sk}/><path d="M58 106Q80 136 102 106Z" fill="var(--face)" stroke="var(--face)" stroke-width="4" stroke-linejoin="round"/>`,
+  think:eye(60,84)+eye(104,84)+`<path d="M90 68L114 63" ${sk}/><path d="M66 116q7-7 14 0t14 0" ${sk}/>`
+};
+const mochi=$('#mochi'), faceG=$('#face'), bubble=$('#bubble');
+let badgesReady=false;
+function say(text,mood){
+  if(mood) faceG.innerHTML=faces[mood]||faces.happy;
+  if(text){bubble.textContent=text;bubble.classList.remove('pop');void bubble.offsetWidth;bubble.classList.add('pop');}
+  if(badgesReady) checkBadges();
+}
+function hop(){mochi.classList.remove('hop');void mochi.getBoundingClientRect();mochi.classList.add('hop');}
+
+/* ---------- state & scenes ---------- */
+const scenes=[
+  {label:'Départ',desc:'On se présente',mood:'happy',say:"Salut, moi c'est Séleirine ! Je pars en voyage dans un téléphone, et j'ai besoin de vous pour ne pas me faire piéger. On y va ?"},
+  {label:'Les messages',desc:'Les messages piégés',mood:'think',say:"J'ai reçu quatre messages ce matin. Un seul est vrai, je crois. Vous m'aidez à trier ?"},
+  {label:'Le coffre',desc:'Les mots de passe',mood:'think',say:"Voilà mon coffre-fort. Plus le mot de passe est long, plus il est dur à deviner. Testez-en quelques-uns !"},
+  {label:'La double clé',desc:'La double vérification',mood:'worried',say:"Un pirate a mon mot de passe… Heureusement, il me reste une deuxième serrure. Regardons ça."},
+  {label:'Vie privée',desc:'Traces et vie privée',mood:'think',say:"Plein de réglages sont ouverts par défaut sur mon téléphone… Verrouillons-les un par un !"},
+  {label:'Poster ?',desc:"Ce qu'on poste",mood:'wow',say:"Tout ce que je poste voyage plus loin que prévu. Pour chaque photo, dites-moi : je poste ou pas ?"},
+  {label:'Intox',desc:'Infos, IA et faux profils',mood:'wow',say:"Une vidéo, une voix, une photo… tout peut être fabriqué maintenant. Aidez-moi à garder l'œil ouvert !"},
+  {label:'Jeux et achats',desc:'Jeux en ligne et achats intégrés',mood:'wow',say:"J'adore jouer ! Mais certaines boutiques sont faites pour me faire dépenser sans que je m'en rende compte. Démasquons-les."},
+  {label:'Inconnu·e',desc:'Les inconnu·es',mood:'worried',say:"Quelqu'un que je ne connais pas m'écrit… Il est gentil, non ? Aidez-moi à réagir."},
+  {label:'Images intimes',desc:'Images intimes et chantage',mood:'worried',say:"Sujet délicat. La règle d'or : ce n'est jamais ta faute, et tu n'es pas seul·e. On regarde ça calmement."},
+  {label:'Amour et contrôle',desc:'Amour et contrôle',mood:'think',say:"Entre amoureux, on ne se doit pas ses mots de passe. Voyons quelles demandes sont normales."},
+  {label:'Ça dérape',desc:'Quand ça dérape',mood:'worried',say:"Là, c'est plus sérieux. Des gens se moquent d'une copine. Qu'est-ce qu'on fait, étape par étape ?"},
+  {label:'Codes',desc:'Harcèlement et codes en emojis',mood:'wow',say:"Les emojis cachent parfois des messages… Décodons-les, et repérons quand ça devient du harcèlement."},
+  {label:'Attention',desc:'Réseaux, vidéos courtes et attention',mood:'think',say:"Mon cerveau adore la nouveauté… et ces applis le savent. Regardons comment elles s'y prennent, sans exagérer."},
+  {label:'Cadre et sommeil',desc:'Contrôle parental et temps d\'écran',mood:'think',say:"Un cadre, c'est comme une ceinture de sécurité. Regardons à quoi il sert, et pourquoi mes nuits comptent autant."},
+  {label:'Batterie',desc:'Les écrans et la fatigue',mood:'sleepy',say:"Je suis un peu à plat… Cochez vos habitudes et regardez ce qui arrive à ma batterie."},
+  {label:PACT?'Le pacte':'Arrivée',desc:PACT?'Le pacte de famille':'Arrivée et badges',mood:'proud',say:PACT?"On est arrivés ! Merci d'avoir voyagé avec moi. Dernière chose : le pacte de famille.":"On est arrivés ! Merci d'avoir voyagé avec moi. Regardez les badges qu'on a gagnés en chemin."}
+];
+const N=scenes.length;
+const st={att:{n:0,ok:0},code:{n:0,ok:0},codeOpen:new Set(),game:{n:0,ok:0},sleepOk:false,info:{n:0,ok:0},love:{n:0,ok:0},locked:0,intime:false,phish:{n:0,ok:0},pwMax:0,tfa:false,post:{n:0,ok:0},stranger:false,steps:new Set(),batt:50};
+let cur=-1;
+
+/* ---------- badges (kept between visits) ---------- */
+const badgeDefs=[
+ {id:'detective',l:'D',t:'Détective',h:"3 messages sur 4 bien triés",ok:()=>st.phish.ok>=3},
+ {id:'coffre',l:'C',t:'Coffre béton',h:"Un mot de passe de niveau « Solide » au test",ok:()=>st.pwMax>=3},
+ {id:'cle',l:'2',t:'Double clé',h:"Bloquer le pirate avec la double vérification",ok:()=>st.tfa},
+ {id:'vie',l:'V',t:'Vie privée',h:"Verrouiller 4 réglages sur 5",ok:()=>st.locked>=4},
+ {id:'poste',l:'P',t:'Malin du post',h:"5 bons réflexes sur 6 en postant",ok:()=>st.post.ok>=5},
+ {id:'oeil',l:'O',t:'Œil critique',h:"4 bonnes réponses sur 5 en fiable ou douteux",ok:()=>st.info.ok>=4},
+ {id:'joueuse',l:'J',t:'Joueuse avisée',h:"5 bonnes réponses sur 6 sur les jeux",ok:()=>st.game.ok>=5},
+ {id:'radar',l:'R',t:'Radar',h:"Bloquer l'inconnu et prévenir un adulte",ok:()=>st.stranger},
+ {id:'ecran',l:'S',t:'Écran sûr',h:"Bon réflexe face au chantage",ok:()=>st.intime},
+ {id:'limites',l:'L',t:'Limites claires',h:"4 bonnes réponses sur 5 sur le contrôle",ok:()=>st.love.ok>=4},
+ {id:'bouclier',l:'B',t:'Bouclier',h:"Ouvrir les 4 étapes face au harcèlement",ok:()=>st.steps.size===4},
+ {id:'decodeuse',l:'?',t:'Décodeuse',h:"6 bonnes réponses sur 8 sur les codes",ok:()=>st.code.ok>=6},
+ {id:'esprit',l:'E',t:'Esprit clair',h:"6 bonnes réponses sur 7 sur l'attention",ok:()=>st.att.ok>=6},
+ {id:'nuit',l:'N',t:'Nuit protégée',h:"Trouver un coucher qui laisse assez de sommeil",ok:()=>st.sleepOk},
+ {id:'batterie',l:'%',t:'Batterie pleine',h:"Remonter la batterie à 80 %",ok:()=>st.batt>=80}
+];
+let earned=new Set();
+try{earned=new Set(JSON.parse(localStorage.getItem('seleirine-badges')||'[]'));}catch(e){}
+function updateBc(){$('#bc').textContent=`Badges ${[...earned].filter(id=>badgeDefs.some(b=>b.id===id)).length}/${badgeDefs.length}`;}
+function toast(b){
+  const t=document.createElement('div'); t.className='toast'; t.setAttribute('role','status');
+  const c=document.createElement('span'); c.className='coin'; c.textContent=b.l;
+  const d=document.createElement('div'), s1=document.createElement('b'), s2=document.createElement('small');
+  s1.textContent='Badge débloqué : '+b.t; s2.textContent=b.h; d.append(s1,s2); t.append(c,d);
+  $('#toasts').appendChild(t); hop();
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),450);},4500);
+}
+function checkBadges(){
+  let any=false;
+  badgeDefs.forEach(b=>{if(!earned.has(b.id)&&b.ok()){earned.add(b.id);any=true;toast(b);}});
+  if(any){try{localStorage.setItem('seleirine-badges',JSON.stringify([...earned]));}catch(e){} updateBc();}
+}
+updateBc(); badgesReady=true;
+
+/* ---------- illustrations ---------- */
+const S='stroke="var(--face)" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"';
+const icons={
+ phone:`<g ${S}><rect x="26" y="6" width="48" height="88" rx="11" fill="#fff"/><rect x="33" y="17" width="34" height="58" rx="5" fill="var(--sky)"/><circle cx="50" cy="85" r="4" fill="var(--face)"/></g><g transform="translate(34,30) scale(.2)"><use href="#mini"/></g>`,
+ msg:`<g ${S}><path d="M14 14h72a8 8 0 0 1 8 8v40a8 8 0 0 1-8 8H58L38 92V70H14a8 8 0 0 1-8-8V22a8 8 0 0 1 8-8z" fill="var(--coral)"/><path d="M50 28v18M50 55v1" fill="none" stroke="#fff" stroke-width="8"/></g>`,
+ lock:`<g ${S}><path d="M30 44V32a20 20 0 0 1 40 0v12" fill="none" stroke-width="8"/><rect x="18" y="42" width="64" height="50" rx="11" fill="var(--sun)"/><circle cx="50" cy="63" r="7" fill="var(--face)"/><path d="M50 67v13" stroke-width="7"/></g>`,
+ shield:`<g ${S}><path d="M50 6l38 13v27c0 25-17 41-38 48C29 87 12 71 12 46V19z" fill="var(--mint)"/><path d="M31 50l13 13 25-27" fill="none" stroke="#fff" stroke-width="8"/></g>`,
+ eye:`<g ${S}><path d="M4 50C22 20 78 20 96 50C78 80 22 80 4 50z" fill="#fff"/><circle cx="50" cy="50" r="18" fill="var(--sky)"/><circle cx="50" cy="50" r="8" fill="var(--face)"/><circle cx="56" cy="44" r="3" fill="#fff" stroke="none"/></g>`,
+ camera:`<g ${S}><path d="M32 28l6-14h24l6 14" fill="var(--sun)"/><rect x="6" y="26" width="88" height="62" rx="12" fill="var(--pink)"/><circle cx="50" cy="57" r="20" fill="#fff"/><circle cx="50" cy="57" r="10" fill="var(--sky)"/><circle cx="80" cy="38" r="3" fill="var(--face)"/></g>`,
+ magnifier:`<g ${S}><path d="M64 64L90 90" stroke-width="11"/><circle cx="42" cy="42" r="30" fill="#fff"/><path d="M33 35a9 9 0 1 1 13 8c-3 2-4 4-4 8" fill="none" stroke-width="5"/><path d="M42 60v1" stroke-width="6"/></g>`,
+ gamepad:`<g ${S}><rect x="4" y="26" width="92" height="50" rx="25" fill="var(--accent)"/><path d="M28 40v22M17 51h22" fill="none" stroke="#fff" stroke-width="7"/><circle cx="68" cy="45" r="6" fill="var(--sun)"/><circle cx="81" cy="58" r="6" fill="var(--coral)"/></g>`,
+ chat:`<g ${S}><path d="M10 12h52a8 8 0 0 1 8 8v24a8 8 0 0 1-8 8H34L20 64V52H10a8 8 0 0 1-8-8V20a8 8 0 0 1 8-8z" fill="var(--sky)"/><path d="M40 50h46a8 8 0 0 1 8 8v20a8 8 0 0 1-8 8h-4v10L70 86H40a8 8 0 0 1-8-8V58a8 8 0 0 1 8-8z" fill="#fff"/><path d="M30 26a6 6 0 1 1 9 5c-2 1-3 3-3 5M36 44v1" fill="none" stroke-width="4"/></g>`,
+ stop:`<g ${S}><path d="M32 6h36l26 26v36L68 94H32L6 68V32z" fill="var(--coral)"/><path d="M50 26v34M50 72v1" fill="none" stroke="#fff" stroke-width="10"/></g>`,
+ heart:`<g ${S}><path d="M50 90C14 64 6 44 6 31A23 23 0 0 1 50 24a23 23 0 0 1 44 7c0 13-8 33-44 59z" fill="var(--pink)"/><path d="M42 50v-5a8 8 0 0 1 16 0v5" fill="none"/><rect x="36" y="49" width="28" height="22" rx="5" fill="#fff"/></g>`,
+ megaphone:`<g ${S}><path d="M32 66l6 24h14l-6-24" fill="var(--sun)"/><path d="M10 36h20l42-24v70L30 62H10a4 4 0 0 1-4-4V40a4 4 0 0 1 4-4z" fill="var(--coral)"/><path d="M82 30l12-7M84 47h12M82 64l12 7" fill="none" stroke-width="5"/></g>`,
+ emoji:`<g ${S}><circle cx="50" cy="50" r="43" fill="var(--sun)"/><circle cx="34" cy="42" r="5" fill="var(--face)"/><circle cx="66" cy="42" r="5" fill="var(--face)"/><path d="M28 31l14 4M72 31l-14 4" fill="none" stroke-width="5"/><path d="M32 66q18 12 36 0" fill="none" stroke-width="5"/></g>`,
+ moon:`<g ${S}><path d="M60 8A42 42 0 1 0 92 66 34 34 0 0 1 60 8z" fill="var(--sun)"/><path d="M80 14v14M73 21h14M88 44v8M84 48h8" fill="none" stroke-width="4"/></g>`,
+ battery:`<g ${S}><rect x="6" y="28" width="80" height="46" rx="11" fill="#fff"/><rect x="86" y="42" width="8" height="18" rx="3" fill="var(--face)"/><rect x="14" y="36" width="44" height="30" rx="5" fill="var(--mint)" stroke="none"/><path d="M52 20L36 52h14l-6 28 24-34H54z" fill="var(--sun)"/></g>`,
+ brain:`<g ${S}><path d="M50 14C42 6 24 10 22 26 12 30 10 44 18 52 14 64 24 76 36 74 40 82 50 82 50 74 50 82 60 82 64 74 76 76 86 64 82 52 90 44 88 30 78 26 76 10 58 6 50 14z" fill="var(--pink)"/><path d="M50 14V74M34 38c8 0 12 4 16 4M66 52c-8 0-12 4-16 4M30 60c6-2 10-2 14 2" fill="none"/></g>`,
+ trophy:`<g ${S}><path d="M26 8h48v28a24 24 0 0 1-48 0z" fill="var(--sun)"/><path d="M26 16H10c0 20 9 28 20 30M74 16h16c0 20-9 28-20 30M50 60v14" fill="none"/><rect x="30" y="74" width="40" height="16" rx="4" fill="var(--accent)"/></g>`
+};
+const look=[['vio','phone'],['coral','msg'],['sun','lock'],['mint','shield'],['sky','eye'],['pink','camera'],['sun','magnifier'],['vio','gamepad'],['sky','chat'],['coral','stop'],['pink','heart'],['coral','megaphone'],['sun','emoji'],['pink','brain'],['sky','moon'],['mint','battery'],['vio','trophy']];
+const themeCol={vio:'var(--accent)',coral:'var(--coral)',sun:'var(--sun)',mint:'var(--mint)',sky:'var(--sky)',pink:'var(--pink)'};
+function banner(i){
+  const [th,ic]=look[i], c=themeCol[th]; let seed=i*977+31;
+  const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const pal=['var(--sun)','var(--coral)','var(--sky)','var(--mint)','var(--pink)','var(--accent)'];
+  let d=`<circle cx="130" cy="120" r="78" fill="${c}" opacity=".35"/><circle cx="520" cy="36" r="62" fill="${c}" opacity=".35"/>`;
+  for(let k=0;k<16;k++){
+    const x=(r()<.5?14+r()*200:426+r()*200).toFixed(1), y=(14+r()*122).toFixed(1), col=pal[Math.floor(r()*pal.length)], t=k%4, z=+(5+r()*7).toFixed(1);
+    d+= t===0?`<circle cx="${x}" cy="${y}" r="${z}" fill="${col}" stroke="var(--face)" stroke-width="3"/>`
+      : t===1?`<circle cx="${x}" cy="${y}" r="${z}" fill="none" stroke="${col}" stroke-width="4"/>`
+      : t===2?`<path d="M${x-z} ${y}h${2*z}M${x} ${y-z}v${2*z}" stroke="${col}" stroke-width="4" stroke-linecap="round"/>`
+      : `<path d="M${x} ${y-z}L${+x+z} ${+y+z}L${x-z} ${+y+z}Z" fill="${col}" stroke="var(--face)" stroke-width="3" stroke-linejoin="round"/>`;
+  }
+  let w='M0 142'; for(let x=0;x<640;x+=40) w+=`Q${x+20} ${(x/40)%2?160:124} ${x+40} 142`;
+  return `<svg class="banner" viewBox="0 0 640 160" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${d}<path d="${w}" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/><circle cx="320" cy="80" r="66" fill="${c}" opacity=".5"/><g transform="translate(255,15) scale(1.3)">${icons[ic]}</g></svg>`;
+}
+
+const track=$('#track'), fill=$('#fill'), runner=$('#runner');
+const dots=scenes.map((s,i)=>{
+  const b=document.createElement('button');
+  b.className='dot'; b.style.setProperty('--dc',themeCol[look[i][0]]); b.style.left=(i/(N-1)*100)+'%';
+  b.setAttribute('aria-label',`Étape ${i+1} : ${s.label}`);
+  b.addEventListener('click',()=>go(i));
+  track.insertBefore(b,runner); return b;
+});
+$('#roadmap').innerHTML=scenes.slice(1).map((s,i)=>`<li style="--sc:${themeCol[look[i+1][0]]}"><span class="mi"><svg viewBox="0 0 100 100" aria-hidden="true">${icons[look[i+1][1]]}</svg></span><b>${i+1}. ${s.desc}</b></li>`).join('');
+
+const secs=$$('.scene');
+secs.forEach((sec,k)=>{sec.classList.add('t-'+look[k][0]);sec.insertAdjacentHTML('afterbegin',banner(k));});
+function go(i,opts={}){
+  i=Math.max(0,Math.min(N-1,i)); if(i===cur) return;
+  const first=cur<0; cur=i;
+  secs.forEach((s,k)=>s.hidden=k!==i);
+  dots.forEach((d,k)=>{d.classList.toggle('done',k<=i);d.setAttribute('aria-current',k===i?'step':'false')});
+  const p=i/(N-1)*100; fill.style.width=p+'%'; runner.style.left=p+'%';
+  $('#where').textContent=i===0?'Départ':`Étape ${i} sur ${N-1} · ${scenes[i].label}`;
+  $('#counter').textContent=`${i+1} / ${N}`;
+  $('#prev').disabled=i===0; $('#next').disabled=i===N-1;
+  say(scenes[i].say,scenes[i].mood); if(!first) hop();
+  if(i===N-1) renderBadges();
+  try{history.replaceState(null,'','#etape-'+(i+1));}catch(e){}
+  if(!first && !opts.noscroll) window.scrollTo({top:0,behavior:'smooth'});
+}
+$('#prev').onclick=()=>go(cur-1);
+$('#next').onclick=()=>go(cur+1);
+$$('[data-next]').forEach(b=>b.onclick=()=>go(cur+1));
+document.addEventListener('keydown',e=>{
+  if(/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+  if(e.key==='ArrowRight') go(cur+1); if(e.key==='ArrowLeft') go(cur-1);
+});
+
+/* ---------- 1. phishing ---------- */
+const msgs=[
+  {app:'SMS',from:'Colis-Info',text:"Votre colis n°FR84920 est en attente. Réglez 1,99 € de frais de livraison avant ce soir : colis-suivi-fr.top/payer",trap:true,why:"Le lien ressemble à un site de livraison mais finit en .top. Un petit paiement et un « avant ce soir » : classique pour te faire aller vite."},
+  {app:'Insta',from:'Lola',text:"Salut c'est Lola 😅 j'ai perdu mon compte, tu peux me donner le code que tu vas recevoir par SMS ? stp c'est urgent",trap:true,why:"Le compte de Lola est sûrement piraté. Ce code sert à entrer dans TON compte. Appelle Lola ou parle-lui en vrai avant de faire quoi que ce soit."},
+  {app:'SMS',from:'Snapchat',text:"Ton code de vérification Snapchat est 482 913. Ne le partage avec personne.",trap:false,why:"Vrai, si c'est toi qui viens d'essayer de te connecter. Et le message le dit : ce code ne se partage jamais. Si tu n'as rien demandé, change ton mot de passe."},
+  {app:'Message',from:'Méga Concours',text:"🎉 Bravo ! Tu as gagné une PS5. Connecte-toi avec ton compte TikTok pour la recevoir : tiktok-cadeaux.win",trap:true,why:"Un cadeau, un faux site et une demande de connexion : ils veulent ton mot de passe. Personne n'offre une console à quelqu'un qu'il ne connaît pas."}
+];
+$('#phish').innerHTML=msgs.map((m,i)=>`
+ <div class="card msg" data-i="${i}">
+  <div class="meta"><span>${m.from}</span><span>${m.app}</span></div>
+  <div class="txt"></div>
+  <div class="row"><button class="btn" data-a="real">Vrai message</button><button class="btn" data-a="trap">Piège</button></div>
+  <div class="verdict"></div>
+ </div>`).join('');
+$$('#phish .msg').forEach((c,i)=>{
+  $('.txt',c).textContent=msgs[i].text;
+  $$('button',c).forEach(b=>b.onclick=()=>{
+    const m=msgs[i], guessTrap=b.dataset.a==='trap', ok=guessTrap===m.trap;
+    $$('button',c).forEach(x=>x.disabled=true);
+    const v=$('.verdict',c); v.className='verdict show '+(ok?'good':'bad');
+    v.innerHTML=`<strong>${ok?'Bien vu':'Aïe, raté'}${m.trap?' · c\'était un piège':' · c\'était vrai'}</strong>`;
+    v.appendChild(document.createTextNode(m.why));
+    st.phish.n++; if(ok) st.phish.ok++;
+    $('#phishTally').textContent=`${st.phish.ok} bonne${st.phish.ok>1?'s':''} réponse${st.phish.ok>1?'s':''} sur ${st.phish.n}`;
+    if(st.phish.n===msgs.length){
+      say(st.phish.ok>=3?"Bravo, vous avez l'œil ! Retenez : lien bizarre, urgence, demande de code ou de mot de passe, on s'arrête.":"On se fait tous avoir un jour. L'important, c'est de s'arrêter et de vérifier avant de cliquer.",st.phish.ok>=3?'proud':'think');
+    } else say(ok?"Oh, bien joué !":"Aïe… bon à savoir pour la prochaine fois.",ok?'happy':'worried');
+  });
+});
+
+/* ---------- 2. passwords ---------- */
+const input=$('#pwtest'), meter=$('#meter');
+const common=['azerty','password','motdepasse','123456','qwerty','soleil','doudou','iloveyou','0000','1234','admin','football','marseille','princesse','licorne'];
+function bitsOf(pw){
+  const low=pw.toLowerCase(); let pool=0;
+  if(/[a-zàâçéèêëîïôûùüÿ]/.test(pw)) pool+=26;
+  if(/[A-Z]/.test(pw)) pool+=26;
+  if(/\d/.test(pw)) pool+=10;
+  if(/[^A-Za-z0-9àâçéèêëîïôûùüÿ]/.test(pw)) pool+=33;
+  let b=pw.length*Math.log2(pool||2);
+  if(common.some(c=>low.includes(c)) && pw.length<14) b=Math.min(b,16);
+  else if(/^[A-Za-zÀ-ÿ]+\d{0,4}[!?.*]?$/.test(pw) && pw.length<=12) b=Math.min(b,30);
+  if(/(.)\1{2,}/.test(pw)) b-=pw.length;
+  return Math.max(b,1);
+}
+function human(sec){
+  if(sec<1) return "moins d'une seconde";
+  if(sec<60) return Math.round(sec)+' secondes';
+  if(sec<3600) return Math.round(sec/60)+' minutes';
+  if(sec<86400) return Math.round(sec/3600)+' heures';
+  if(sec<86400*365) return Math.round(sec/86400)+' jours';
+  const y=sec/(86400*365);
+  if(y<1000) return Math.round(y)+' ans';
+  if(y<1e6) return Math.round(y/1000)+' mille ans';
+  if(y<1e9) return Math.round(y/1e6)+' millions d\'années';
+  return 'des milliards d\'années';
+}
+function evalPw(){
+  const pw=input.value;
+  if(!pw){meter.dataset.l=0;$('#pwLabel').textContent='Tape quelque chose';$('#pwTime').textContent='';return;}
+  const b=bitsOf(pw), sec=Math.pow(2,b)/2/1e10;
+  const l=b<30?1:b<50?2:b<70?3:4;
+  meter.dataset.l=l;
+  $('#pwLabel').textContent=['','Très faible','Faible','Solide','Béton'][l];
+  $('#pwTime').textContent='Deviné en : '+human(sec);
+  if(l>st.pwMax){st.pwMax=l;
+    if(l===1) say("Aïe, celui-là se devine en un clin d'œil !", 'worried');
+    if(l===2) say("Mieux, mais un ordinateur ne ferait qu'une bouchée de celui-là.",'think');
+    if(l>=3) say(l===4?"Waouh, celui-là, personne ne le devinera !":"Là, ça commence à être costaud.",l===4?'proud':'happy');
+  }
+}
+input.addEventListener('input',evalPw);
+$('#pwChips').innerHTML=['azerty123','Lola2011','MonChienMange3Pizzas!'].map(t=>`<button class="chip" type="button">${t}</button>`).join('');
+$$('#pwChips .chip').forEach(c=>c.onclick=()=>{input.value=c.textContent;evalPw();});
+const words=['pizza','nuage','fusée','tortue','banjo','cactus','volcan','moustache','trampoline','dragon','panda','météore','sirop','girafe','licorne','frigo','pirate','boussole','cornichon','hamac','tonnerre','biscuit','requin','lampion','scooter','mandarine','igloo','tricycle','pingouin','fanfare','radis','chaussette'];
+function rnd(n){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n;}
+$('#pwGen').onclick=()=>{
+  const w=[];while(w.length<4){const x=words[rnd(words.length)];if(!w.includes(x))w.push(x);}
+  input.value=w.join('-')+(rnd(90)+10)+['!','?','#','*'][rnd(4)];
+  $('#pwGenNote').textContent="Juste pour l'inspiration. Invente la tienne avec quatre mots qui n'ont aucun lien.";
+  evalPw();
+};
+
+/* ---------- 3. 2FA ---------- */
+const tfa=$('#tfa');
+tfa.onchange=()=>{$('#tfaLabel').textContent='Double vérification : '+(tfa.checked?'activée':'désactivée');};
+let tfaTimer=[];
+$('#tfaRun').onclick=()=>{
+  tfaTimer.forEach(clearTimeout); tfaTimer=[];
+  const [n1,n2,n3]=['#n1','#n2','#n3'].map(s=>$(s));
+  [n1,n2,n3].forEach(n=>n.className='node idle');
+  const on=tfa.checked, out=$('#tfaOut');
+  out.textContent='Le pirate tape le mot de passe…';
+  say('Il essaie d\'entrer…','worried');
+  tfaTimer.push(setTimeout(()=>{n1.className='node hit';$('small',n1).textContent='Mot de passe accepté';},600));
+  tfaTimer.push(setTimeout(()=>{
+    if(on){
+      n2.className='node stop';$('small',n2).textContent='Code demandé : il ne l\'a pas';
+      out.textContent='Bloqué. Sans le téléphone de Séleirine, le mot de passe ne sert à rien.';
+      st.tfa=true; say('Ouf ! La deuxième serrure a tenu. Je vous remercie !','proud');
+    }else{
+      n2.className='node idle';$('small',n2).textContent='Jamais demandé';
+      n3.className='node hit';$('small',n3).textContent='Ouvert. Le pirate est dedans.';
+      out.textContent='Le pirate est dans le compte. Réessaie en activant la double vérification.';
+      say("Il est dans mon compte ! Activez la double vérification et réessayons.",'worried');
+    }
+  },1500));
+};
+
+/* ---------- 4. post ---------- */
+const posts=[
+  {q:"Une photo de toi devant l'entrée du collège, avec le nom de l'établissement bien visible.",best:'keep',why:"Avec l'uniforme, le nom et l'heure, n'importe qui sait où te trouver chaque jour."},
+  {q:"Une story du pyjama party avec trois copines. Toutes ont dit oui.",best:'post',why:"Tout le monde est d'accord. Vérifie quand même qui peut voir la story : amis proches plutôt que tout le monde."},
+  {q:"Une capture d'écran d'un message privé d'une copine pour rigoler avec les autres.",best:'keep',why:"Un message privé reste privé. Le partager brise la confiance et peut finir en harcèlement."},
+  {q:"Une story en direct : « on part deux semaines en vacances, la maison est vide ! »",best:'keep',why:"Poste-la au retour. En direct, tu dis à des inconnus que la maison est vide."},
+  {q:"Ton dessin ou ton clip de sport, sur un compte privé avec des abonnés que tu connais.",best:'post',why:"Montrer ce qu'on fait est une des meilleures choses sur les réseaux. Compte privé et abonnés connus, c'est le bon réglage."},
+  {q:"Une photo d'une amie qui s'est endormie en pleine soirée. Elle est « trop drôle ».",best:'keep',why:"Elle n'a pas pu dire oui. Si elle était réveillée et en colère, tu la posterais ? Sinon, ne la poste pas."}
+];
+$('#posts').innerHTML=posts.map((p,i)=>`
+ <div class="card post" data-i="${i}">
+  <p class="q"></p>
+  <div class="row"><button class="btn" data-a="post">Je poste</button><button class="btn" data-a="keep">Je garde</button></div>
+  <div class="verdict"></div>
+ </div>`).join('');
+$$('#posts .post').forEach((c,i)=>{
+  $('.q',c).textContent=posts[i].q;
+  $$('button',c).forEach(b=>b.onclick=()=>{
+    const p=posts[i], ok=b.dataset.a===p.best;
+    $$('button',c).forEach(x=>x.disabled=true);
+    const v=$('.verdict',c); v.className='verdict show '+(ok?'good':'bad');
+    v.innerHTML=`<strong>${ok?'Bon réflexe':'À repenser'}</strong>`;
+    v.appendChild(document.createTextNode(p.why));
+    st.post.n++; if(ok) st.post.ok++;
+    $('#postTally').textContent=`${st.post.ok} bon${st.post.ok>1?'s':''} réflexe${st.post.ok>1?'s':''} sur ${st.post.n}`;
+    if(st.post.n===posts.length) say(st.post.ok>=5?"Vous postez en pros ! Réfléchir deux secondes avant, ça change tout.":"Avant de poster, je me demande : est-ce que je serais à l'aise si tout le monde le voyait, pour toujours ?",st.post.ok>=5?'proud':'think');
+    else say(ok?'Oui, bon réflexe !':'Hmm, relisons ça ensemble.',ok?'happy':'think');
+  });
+});
+
+/* ---------- 5. stranger ---------- */
+const outs=[
+  {cls:'bad',t:'Piège',x:"Tu viens de donner ton âge à quelqu'un qui n'a rien à faire dans ta vie. Il sait maintenant que tu es jeune, et il va insister pour changer d'appli. Coupe la conversation.",m:'worried',s:"Oh non, il sait mon âge maintenant…"},
+  {cls:'bad',t:'Risqué',x:"Il va te répondre un faux nom, un faux âge, des compliments. Tu ne peux pas vérifier. Entrer dans la discussion, c'est déjà lui laisser la porte ouverte.",m:'think',s:"Il peut me raconter n'importe quoi, je ne peux pas vérifier…"},
+  {cls:'good',t:'Le bon réflexe',x:"Tu ne dois rien à cette personne. Bloque, signale le compte, et montre la conversation à un adulte. Même s'il dit « garde le secret », surtout dans ce cas.",m:'proud',s:"Voilà, je bloque et je préviens. C'est exactement ça !"}
+];
+$$('#opts .opt').forEach(b=>b.onclick=()=>{
+  const o=outs[+b.dataset.o];
+  $$('#opts .opt').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const v=$('#strV'); v.className='verdict show '+o.cls;
+  v.innerHTML=`<strong>${o.t}</strong>`; v.appendChild(document.createTextNode(o.x));
+  if(o.cls==='good') st.stranger=true;
+  say(o.s,o.m);
+});
+
+/* ---------- 6. harassment ---------- */
+$$('#steps .step').forEach((s,i)=>s.onclick=()=>{
+  const open=s.getAttribute('aria-expanded')!=='true';
+  s.setAttribute('aria-expanded',open); st.steps.add(i);
+  if(st.steps.size===4) say("Quatre étapes, et un numéro à retenir : le 3018. Vous n'êtes jamais seuls.",'proud');
+});
+$('#copy3018').onclick=function(){
+  const b=this;
+  (navigator.clipboard?navigator.clipboard.writeText('3018'):Promise.reject()).then(()=>{b.textContent='Copié';}).catch(()=>{b.textContent='Note-le : 3018';});
+};
+
+/* ---------- 7. battery ---------- */
+const habits=[
+  {t:'Le téléphone dort hors de la chambre',d:20},
+  {t:'Notifications coupées pendant les devoirs',d:10},
+  {t:'Un repas sans écran',d:10},
+  {t:'Voir des ami·es en vrai, sortir, bouger',d:15},
+  {t:"Scroller au lit jusqu'à minuit",d:-25},
+  {t:'Comparer sa vie à celle des influenceurs',d:-15},
+  {t:'Répondre à tout, tout de suite',d:-10}
+];
+$('#habits').innerHTML=habits.map((h,i)=>`<label class="habit ${h.d>0?'up':'down'}"><input type="checkbox" data-i="${i}"><span></span><em>${h.d>0?'+':'−'}${Math.abs(h.d)}%</em></label>`).join('');
+$$('#habits .habit').forEach((l,i)=>$('span',l).textContent=habits[i].t);
+function batt(){
+  let v=50; $$('#habits input').forEach((c,i)=>{if(c.checked) v+=habits[i].d;});
+  v=Math.max(0,Math.min(100,v)); st.batt=v;
+  const bar=$('#battBar'); bar.style.width=Math.max(v,3)+'%';
+  bar.style.background=v>=60?'var(--good)':v>=30?'var(--sun)':'var(--bad)';
+  $('#battPct').textContent=v+'%';
+  if(v>=80) say("Je suis rechargée à bloc ! Quelle énergie !",'proud');
+  else if(v>=55) say("Ça va mieux. Je tiens le coup.",'happy');
+  else if(v>=30) say("Bof… je me traîne un peu.",'think');
+  else say("Zzz… je n'ai plus de batterie…",'sleepy');
+}
+$$('#habits input').forEach(c=>c.onchange=batt);
+
+/* ---------- 8. pact & badges ---------- */
+const rules=[
+  "Les téléphones dorment hors des chambres la nuit",
+  "On utilise un gestionnaire de mots de passe, et jamais le même deux fois",
+  "Double vérification sur les comptes importants, mail en premier",
+  "Si on voit un truc bizarre, on en parle. Sans punition, promis",
+  "On demande l'accord avant de poster une photo de quelqu'un",
+  "Un repas par jour sans écran, pour tout le monde, parents compris",
+  "On fixe ensemble un budget jeux et un cadre d'écrans, et on le revoit tous les six mois",
+  "On revoit ensemble les réglages de confidentialité de nos comptes",
+  "Si quelqu'un nous met la pression (photo, argent, mot de passe), on le dit tout de suite"
+];
+let saved=[]; try{saved=JSON.parse(localStorage.getItem('mochi-pacte')||'[]');}catch(e){}
+$('#pact').innerHTML=rules.map((r,i)=>`<label class="habit"><input type="checkbox" data-i="${i}" ${saved.includes(i)?'checked':''}><span></span></label>`).join('');
+$$('#pact .habit').forEach((l,i)=>$('span',l).textContent=rules[i]);
+function pact(){
+  const on=$$('#pact input').map((c,i)=>c.checked?i:-1).filter(i=>i>=0);
+  try{localStorage.setItem('mochi-pacte',JSON.stringify(on));}catch(e){}
+  $('#pactTally').textContent=on.length?`${on.length} règle${on.length>1?'s':''} choisie${on.length>1?'s':''} par la famille`:'Aucune règle choisie pour l\'instant.';
+  if(on.length>=3) say("Pacte signé ! Je repars du bon pied. Merci la famille !",'proud');
+}
+if(PACT){$$('#pact input').forEach(c=>c.onchange=pact); pact();}
+function renderBadges(){
+  $('#badges').innerHTML=badgeDefs.map(b=>{const on=earned.has(b.id);return `<div class="badge ${on?'on':''}"><span class="coin">${b.l}</span><b>${b.t}</b><span>${on?'Gagné':b.h}</span></div>`;}).join('');
+}
+
+/* ---------- new scenes: helpers ---------- */
+function quiz(el,tallyEl,items,btns,s,after){
+  el.innerHTML=items.map(()=>`<div class="card post"><p class="q"></p><div class="row">${btns.map(b=>`<button class="btn" data-a="${b[0]}">${b[1]}</button>`).join('')}</div><div class="verdict"></div></div>`).join('');
+  $$('.post',el).forEach((c,i)=>{
+    $('.q',c).textContent=items[i].q;
+    $$('button',c).forEach(b=>b.onclick=()=>{
+      const it=items[i], ok=b.dataset.a===it.best;
+      $$('button',c).forEach(x=>x.disabled=true);
+      const v=$('.verdict',c); v.className='verdict show '+(ok?'good':'bad');
+      v.innerHTML=`<strong>${ok?'Bien vu':'À repenser'}</strong>`; v.appendChild(document.createTextNode(it.why));
+      s.n++; if(ok) s.ok++;
+      tallyEl.textContent=`${s.ok} bonne${s.ok>1?'s':''} réponse${s.ok>1?'s':''} sur ${s.n}`;
+      if(s.n===items.length) after(s); else say(ok?'Oui, bien vu !':'Hmm, relisons ça ensemble.',ok?'happy':'think');
+    });
+  });
+}
+function choices(optsEl,vEl,outs,onGood){
+  $$('.opt',optsEl).forEach(b=>b.onclick=()=>{
+    const o=outs[+b.dataset.o];
+    $$('.opt',optsEl).forEach(x=>x.setAttribute('aria-pressed',x===b));
+    vEl.className='verdict show '+o.cls;
+    vEl.innerHTML=`<strong>${o.t}</strong>`; vEl.appendChild(document.createTextNode(o.x));
+    if(o.cls==='good') onGood(); say(o.s,o.m);
+  });
+}
+
+/* ---------- traces & vie privée ---------- */
+const priv=[
+  'Compte privé : seuls les abonnés acceptés voient mes posts',
+  'Position cachée : pas de carte, pas de localisation en direct',
+  'Profil non suggéré aux inconnus (recherche, « personnes à ajouter »)',
+  'Photos sans localisation ni nom de lieu',
+  'Pubs personnalisées désactivées dans les réglages'
+];
+$('#priv').innerHTML=priv.map(()=>`<label class="habit"><input type="checkbox"><span></span><em>Ouvert</em></label>`).join('');
+const expTxt=['','Visible par tout le monde','Visible par beaucoup de monde','Visible par ses contacts','Presque personne','Seulement ses proches'];
+function exp(){
+  const cs=$$('#priv input'); st.locked=cs.filter(c=>c.checked).length;
+  cs.forEach(c=>{const h=c.closest('.habit'); $('em',h).textContent=c.checked?'Verrouillé':'Ouvert'; h.classList.toggle('up',c.checked);});
+  const l=st.locked===5?4:st.locked>=4?3:st.locked>=2?2:1;
+  $('#expMeter').dataset.l=l;
+  $('#expLabel').textContent=st.locked===0?expTxt[1]:st.locked===5?expTxt[5]:st.locked===4?expTxt[4]:st.locked>=2?expTxt[3]:expTxt[2];
+  $('#expSub').textContent=`${st.locked} réglage${st.locked>1?'s':''} verrouillé${st.locked>1?'s':''} sur 5`;
+  if(st.locked===5) say("Tout est verrouillé ! Maintenant, il n'y a plus que mes proches qui me voient.",'proud');
+  else if(st.locked===0) say("Là, n'importe qui peut voir où je suis et ce que je poste…",'worried');
+  else say(st.locked>=3?"Ça commence à ressembler à quelque chose !":"Un de moins d'ouvert. Continuons !",'happy');
+}
+$$('#priv .habit').forEach((l,i)=>$('span',l).textContent=priv[i]);
+$$('#priv input').forEach(c=>c.onchange=exp); exp();
+
+/* ---------- infos / IA ---------- */
+quiz($('#infos'),$('#infoTally'),[
+  {q:"Une vidéo montre un chanteur très connu en train d'insulter ses fans. Elle circule partout, mais seulement sur des comptes sans nom.",best:'dout',why:"Les vidéos truquées par IA sont de plus en plus réalistes. Aucun média sérieux ne la reprend, et des comptes anonymes sont un signal d'alerte."},
+  {q:"Un article de journal signé, daté, avec les mêmes faits repris par deux autres médias.",best:'fiab',why:"Une source identifiable, une date, des recoupements : ça ne garantit pas tout, mais c'est un bon début."},
+  {q:"Un message vocal de ta « prof » : « envoie-moi vite 30 € en carte cadeau, je te rembourse ». La voix est parfaite.",best:'dout',why:"Une voix peut être copiée à partir de quelques secondes d'audio. Vérifie par un autre moyen, en vrai ou avec un numéro que tu connais."},
+  {q:"Une photo choc « prise hier ». Une recherche d'image inversée la montre déjà en 2016.",best:'dout',why:"On recycle de vieilles images pour illustrer de nouveaux événements. La recherche par image permet de le voir."},
+  {q:"Un profil créé il y a trois jours, photo parfaite, 5 000 abonnés, qui te propose « un plan pour gagner de l'argent facilement ».",best:'dout',why:"Faux abonnés et argent facile : c'est une arnaque classique, et la photo parfaite peut avoir été générée."}
+],[['fiab','Fiable'],['dout','Douteux']],st.info,s=>say(s.ok>=4?"Vous avez l'œil d'un fact-checkeur ! Le réflexe : qui parle, d'où ça vient, ailleurs aussi ?":"Ce n'est pas facile, même pour les adultes. Le réflexe : vérifier avant de partager.",s.ok>=4?'proud':'think'));
+
+/* ---------- images intimes ---------- */
+choices($('#opts2'),$('#intV'),[
+  {cls:'bad',t:'Piège',x:"Payer ne règle rien. Celui qui menace redemande, encore et encore, et garde l'image. Plus tu paies, plus il sait que ça marche.",m:'worried',s:"Il en voudra toujours plus… Ce n'est pas la solution."},
+  {cls:'bad',t:'Risqué',x:"Chaque message lui donne du pouvoir et du temps. Il joue sur ta panique. Ne rentre pas dans son jeu.",m:'think',s:"Plus je réponds, plus il me tient…"},
+  {cls:'good',t:'Le bon réflexe',x:"Ne paie pas, arrête de répondre et garde les captures. Bloque, signale sur l'appli et sur internet-signalement.gouv.fr, et parle à un adulte. Le 3018 aide aussi, même à distance. Ce n'est pas ta faute.",m:'proud',s:"Voilà. Ce n'est jamais ma faute, et je ne suis pas seule."}
+],()=>{st.intime=true;});
+$('#copy3018b').onclick=function(){
+  const b=this;
+  (navigator.clipboard?navigator.clipboard.writeText('3018'):Promise.reject()).then(()=>{b.textContent='Copié';}).catch(()=>{b.textContent='Note-le : 3018';});
+};
+
+/* ---------- amour et contrôle ---------- */
+quiz($('#love'),$('#loveTally'),[
+  {q:"« Donne-moi ton mot de passe, si tu n'as rien à cacher. »",best:'ctrl',why:"Avoir une vie privée n'est pas cacher quelque chose. Et après une rupture, ce mot de passe devient une arme."},
+  {q:"« On partage nos positions pour se retrouver facilement. Chacun peut arrêter quand il veut, sans avoir à se justifier. »",best:'ok',why:"Choisi, réciproque et réversible : c'est ce qui fait la différence."},
+  {q:"« Pourquoi tu as liké sa photo ? Supprime. »",best:'ctrl',why:"Surveiller les likes et imposer ce que tu fais en ligne, c'est du contrôle, même dit gentiment."},
+  {q:"« Tu n'as pas répondu en dix minutes, tu étais où, avec qui ? » (tous les jours)",best:'ctrl',why:"Une question de temps en temps est normale. Exiger de rendre des comptes en permanence, non."},
+  {q:"« Je préférerais que tu ne postes pas cette photo de nous, mais c'est toi qui décides. »",best:'ok',why:"Dire ce qu'on ressent, puis respecter la décision de l'autre, c'est le contraire du contrôle."}
+],[['ok','Ça va'],['ctrl',"C'est du contrôle"]],st.love,s=>say(s.ok>=4?"Vous repérez bien les signaux ! Aimer, ce n'est pas surveiller.":"Pas évident, parce que ça ressemble à de l'amour. Le test : réciproque, choisi, et je peux dire non.",s.ok>=4?'proud':'think'));
+
+/* ---------- jeux en ligne ---------- */
+quiz($('#games'),$('#gameTally'),[
+  {q:"Un skin à 8 € dans un jeu que tu adores. Tu as décidé de l'acheter il y a deux semaines, avec ton budget du mois.",best:'ok',why:"Décidé à froid, dans un budget fixé : c'est un vrai choix, pas une impulsion."},
+  {q:"Des caisses surprises à 3 € : une petite chance d'avoir un personnage rare, sinon tu recommences.",best:'trap',why:"Payer pour un tirage au sort ressemble à un jeu d'argent : on rachète pour « se refaire ». Certains pays, comme la Belgique, les ont interdites."},
+  {q:"Une pop-up : « Dernière chance ! L'offre disparaît dans 10 minutes ! »",best:'trap',why:"Un compte à rebours artificiel pousse à acheter sans réfléchir. L'offre reviendra la semaine prochaine."},
+  {q:"Un joueur en vocal : « Donne-moi ton compte, je te monte de niveau gratuitement. »",best:'trap',why:"Prêter son compte, c'est le perdre, avec tous tes objets. Arnaque très courante."},
+  {q:"Un site « générateur gratuit de monnaie du jeu » te demande ton identifiant et ton mot de passe.",best:'trap',why:"Ça n'existe pas. C'est de l'hameçonnage pour voler ton compte."},
+  {q:"Des gemmes vendues par lots de 1 000, sans prix en euros affiché dans le jeu.",best:'trap',why:"La monnaie virtuelle brouille la valeur réelle. Convertis toujours en euros avant d'acheter."}
+],[['ok','Choix réfléchi'],['trap','Piège']],st.game,s=>say(s.ok>=5?"Vous ne vous laissez pas avoir ! Le réflexe : convertir en euros et décider à froid.":"Ces boutiques sont conçues par des pros pour nous faire craquer. Le réflexe : attendre 24 h avant d'acheter.",s.ok>=5?'proud':'think'));
+const spend=$('#spend');
+function spendCalc(){
+  const w=+spend.value, y=w*52;
+  $('#spendV').textContent=`${w} € par semaine : ${y} € par an`;
+  $('#spendEq').textContent=y===0?'Le budget reste intact.':y<100?"À peu près un jeu neuf.":y<250?"À peu près de bons écouteurs.":y<500?"À peu près une console d'occasion.":y<1000?"À peu près un smartphone reconditionné.":"À peu près un voyage entre ami·es.";
+}
+spend.addEventListener('input',spendCalc); spendCalc();
+
+/* ---------- sommeil ---------- */
+const fmtT=m=>{const t=((m%1440)+1440)%1440;return String(Math.floor(t/60)).padStart(2,'0')+' h '+String(t%60).padStart(2,'0');};
+function sleepCalc(){
+  const bed=+$('#slBed').value, wake=+$('#slWake').value, ado=$('#slAge').value==='ado';
+  const dur=(wake+1440-bed)/60, rec=ado?[8,10]:[9,12];
+  $('#slBedV').textContent=fmtT(bed); $('#slWakeV').textContent=fmtT(wake);
+  const h=Math.floor(dur), m=Math.round((dur-h)*60);
+  $('#slDur').textContent=`${h} h ${String(m).padStart(2,'0')} de sommeil`;
+  $('#sBand').style.left=(rec[0]/12*100)+'%'; $('#sBand').style.width=((rec[1]-rec[0])/12*100)+'%';
+  $('#sMark').style.left=Math.min(dur,12)/12*100+'%';
+  const miss=Math.round((rec[0]-dur)*60), msg=$('#slMsg');
+  if(dur<rec[0]){msg.textContent=`Il manque au moins ${Math.floor(miss/60)?Math.floor(miss/60)+' h ':''}${String(miss%60).padStart(2,'0')} min par nuit`;}
+  else if(dur>rec[1]){msg.textContent="Au-dessus de la fourchette : ça arrive en période de croissance ou de fatigue.";}
+  else msg.textContent="Dans la fourchette conseillée.";
+  return dur<rec[0];
+}
+function sleepSay(){
+  const low=sleepCalc();
+  if(!low) st.sleepOk=true;
+  say(low?"Là, je manque de sommeil… Avancer le coucher de 30 minutes, ça change déjà beaucoup.":"Je suis dans la bonne zone. Je me sens bien !",low?'sleepy':'proud');
+}
+['slBed','slWake','slAge'].forEach(id=>$('#'+id).addEventListener('input',sleepSay));
+$('#slPhone').onchange=()=>{
+  $('#slNote').textContent=$('#slPhone').checked?"Utiliser le téléphone au lit repousse souvent l'endormissement : la durée réelle de sommeil est probablement plus courte que celle affichée. Essaie de le ranger 30 minutes avant.":"Repères courants : 9 à 12 h de sommeil de 6 à 12 ans, 8 à 10 h de 13 à 18 ans.";
+  if($('#slPhone').checked) say("Si je scrolle au lit, je m'endors plus tard que prévu…",'worried');
+};
+sleepCalc();
+
+/* ---------- les copains en ligne la nuit ---------- */
+function frCalc(speak){
+  const on=+$('#frOn').value, dur=(405+1440-on)/60, rec=[8,10];
+  $('#frV').textContent=fmtT(on);
+  const h=Math.floor(dur), m=Math.round((dur-h)*60);
+  $('#frDur').textContent=`${h} h ${String(m).padStart(2,'0')} de sommeil`;
+  $('#frBand').style.left=(rec[0]/12*100)+'%'; $('#frBand').style.width=((rec[1]-rec[0])/12*100)+'%';
+  $('#frMark').style.left=Math.min(dur,12)/12*100+'%';
+  const miss=rec[0]-dur, mm=Math.round(miss*60);
+  $('#frMsg').textContent=miss>0?`Il manque ${Math.floor(mm/60)} h ${String(mm%60).padStart(2,'0')} par nuit`:'Dans la fourchette conseillée.';
+  const debt=Math.max(0,miss)*5;
+  $('#frDebt').textContent=debt>0?`Sur cinq nuits d'école : environ ${Math.round(debt)} h de sommeil en moins, soit ${(debt/8).toFixed(1).replace('.',',')} nuits complètes perdues chaque semaine.`:"Sur cinq nuits d'école, le sommeil est suffisant.";
+  if(speak) say(dur<5?"À cette heure-là, mes copains dorment à peine quelques heures, et il faut se lever pour les cours…":dur<8?"Ce n'est toujours pas assez pour un ado.":"Là, ça va. Voilà une nuit qui laisse le temps de récupérer.",dur<5?'worried':dur<8?'think':'happy');
+}
+$('#frOn').addEventListener('input',()=>frCalc(true));
+frCalc(false);
+
+/* ---------- codes en emojis ---------- */
+const codes=[
+  {e:'🤡',c:"Faire le clown, déconner.",d:"Traiter quelqu'un de nul ou de ridicule, souvent en groupe, sous ses photos ou ses messages."},
+  {e:'🐀',c:"Un rat.",d:"« Balance » : celui ou celle qui a parlé aux adultes. Sert à punir. Dire ce qu'on a vu protège les autres, ce n'est pas balancer."},
+  {e:'💀',c:"« Je meurs de rire. »",d:"Parfois utilisé pour accompagner une moquerie ou une menace. Le contexte décide."},
+  {e:'🐸',c:"Une grenouille, un mème.",d:"Se moquer du physique de quelqu'un et le ou la disqualifier en le ou la traitant de laid·e."},
+  {e:'🐑',c:"Un mouton.",d:"Se moquer d'une personne jugée sans personnalité, qui ne ferait que suivre les autres."},
+  {e:'🦧',c:"Un orang-outan.",d:"Insister sur la honte ou la gêne d'une situation, souvent pour humilier quelqu'un."},
+  {e:'🍜',c:"Un bol de nouilles.",d:"Désigne une photo dénudée (un « nude »), surtout quand elle circule dans un établissement pour menacer ou humilier. Ne la partage jamais : voir l'étape 9."},
+  {e:'🌽',c:"Du maïs.",d:"Remplace le mot « porn » pour contourner la modération et diffuser des contenus sexuels."},
+  {e:'🎱',c:"Le billard, un jeu.",d:"Sert à parler de cocaïne."},
+  {e:'🔌',c:"Une prise électrique.",d:"« Le plug » : quelqu'un qui peut fournir quelque chose, souvent des produits interdits (avec 🍫🍁❄️💊 par exemple). Ne réponds pas : ces réseaux recrutent aussi des jeunes."},
+  {e:'💊🧨💯',c:"Une pilule, de la dynamite, cent points.",d:"La pilule renvoie à « red pill » (Matrix) et peut accompagner des discours haineux contre les femmes. 🧨💯 renvoie à la « règle des 80/20 » de certains groupes masculinistes."},
+  {e:'🍆🍑🍒',c:"Des fruits et légumes.",d:"Sens sexuel. Un inconnu qui les envoie à un mineur teste sa réaction sans l'écrire. Bloque et montre à un adulte."}
+];
+$('#codes').innerHTML=codes.map(()=>`<button class="step" aria-expanded="false"><span class="emo"></span><span class="def"></span><span class="more"></span></button>`).join('');
+$$('#codes .step').forEach((b,i)=>{
+  $('.emo',b).textContent=codes[i].e;
+  $('.def',b).textContent='Sens courant : '+codes[i].c;
+  const m=$('.more',b), s=document.createElement('strong');
+  s.textContent='Sens détourné : '; m.appendChild(s); m.appendChild(document.createTextNode(codes[i].d));
+  b.onclick=()=>{
+    const open=b.getAttribute('aria-expanded')!=='true';
+    b.setAttribute('aria-expanded',open); st.codeOpen.add(i);
+    $('#codeOpen').textContent=`${st.codeOpen.size} carte${st.codeOpen.size>1?'s':''} ouverte${st.codeOpen.size>1?'s':''} sur ${codes.length}`;
+    if(open) say("Le même emoji peut vouloir dire plusieurs choses. Le contexte compte toujours.",'think');
+  };
+});
+quiz($('#codeQuiz'),$('#codeTally'),[
+  {q:"Dans le groupe de classe, plusieurs personnes répondent 🤡🤡🤡 sous chaque photo que poste la même élève.",best:'bully',why:"Ciblé, répété, en groupe : c'est du harcèlement, même sans un mot écrit."},
+  {q:"Deux amis s'envoient 💀💀 après une vidéo drôle.",best:'joke',why:"Ici, 💀 veut dire « je meurs de rire ». Sans cible ni répétition, rien d'inquiétant."},
+  {q:"Un inconnu écrit « t'as le 🔌 ? », puis 🍫🍁, et propose de passer sur une autre appli.",best:'alert',why:"Ça ressemble à une proposition de produits interdits. Ne réponds pas, bloque et montre-le à un adulte."},
+  {q:"Un élève reçoit 🐑 en boucle dans le groupe chaque fois qu'il donne son avis.",best:'bully',why:"Répété et dirigé vers la même personne : c'est une moquerie en groupe. Un 🐑 isolé entre amis n'aurait pas le même sens."},
+  {q:"Sous la story d'un garçon qui a parlé à un adulte du collège, quelqu'un répond 🐀 et tout le monde copie.",best:'bully',why:"Le rat sert à punir ceux qui parlent. Copier le message, c'est participer."},
+  {q:"Une personne plus âgée que toi t'envoie 🍑😏 et « t'as quel âge ? ».",best:'alert',why:"Elle teste ta réaction et ton âge sans l'écrire. Ne réponds pas, bloque, parle à un adulte."},
+  {q:"Dans la discussion du collège, quelqu'un écrit 🍜 sous la photo d'une élève.",best:'alert',why:"Ça désigne une photo dénudée qui circule. Ne la partage pas, ne la commente pas, parle à un adulte. Ce n'est jamais la faute de la personne visée. Le 3018 peut aider à la faire retirer."},
+  {q:"Un copain envoie un mème avec 🐸 dans le groupe, sans rien d'autre.",best:'joke',why:"Isolé, sans cible, c'est sûrement un mème. Envoyé en boucle à une même personne pour se moquer de son physique, ce serait du harcèlement."}
+],[['joke','Blague'],['bully','Harcèlement'],['alert','À signaler à un adulte']],st.code,s=>say(s.ok>=6?"Vous décodez très bien ! Le réflexe : ciblé, répété, en groupe, ou une proposition d'un inconnu.":"Ce n'est pas évident, et les codes changent vite. Demande, et parle-en à un adulte dès que tu doutes.",s.ok>=6?'proud':'think'));
+
+/* ---------- fake news ---------- */
+const hots=$$('.hot'), foundF=new Set();
+hots.forEach((b,i)=>b.onclick=()=>{
+  b.setAttribute('aria-pressed','true'); foundF.add(i);
+  $('#fakeTally').textContent=`${foundF.size} indice${foundF.size>1?'s':''} trouvé${foundF.size>1?'s':''} sur ${hots.length}`;
+  if(foundF.size===hots.length) say("Cinq signaux dans un seul post ! Avant de partager : qui parle, où est la preuve, qui d'autre le dit ?",'proud');
+  else say("Bien repéré ! Il y en a d'autres.",'wow');
+});
+let lvl=0;
+function shareRender(){
+  const n=Math.pow(2,lvl);
+  $('#shNum').textContent=n.toLocaleString('fr-FR')+(n>1?" personnes ont vu l'intox":" personne a vu l'intox");
+  $('#shFill').style.width=(lvl/12*100)+'%';
+  $('#shBtn').disabled=lvl>=12;
+}
+$('#shBtn').onclick=()=>{lvl++;shareRender();if(lvl>=6) say("Ça va très vite. Et le démenti arrive toujours plus tard que l'intox.",'worried');};
+$('#shStop').onclick=()=>{lvl=0;shareRender();say("Tu viens d'arrêter la chaîne. Vérifier d'abord, c'est un vrai super-pouvoir.",'proud');};
+shareRender();
+
+/* ---------- attention ---------- */
+const clips=[['😹','Chat qui rate son saut'],['🍳','Recette express en 15 secondes'],['💃','Danse tendance du moment'],['🏀','Panier impossible'],['💄','Astuce make-up'],['🐶','Chiot qui apprend à nager'],['🎮','Meilleur moment d\'un live'],['🤯','Expérience de science bizarre'],['😂','Sketch d\'un humoriste'],['🛹','Figure de skate ratée'],['📚','Astuce pour réviser'],['🌍','Vue incroyable d\'un drone'],['🧁','Gâteau en 10 secondes'],['👗','Essayage de tenues'],['🎸','Reprise à la guitare'],['🧩','Illusion d\'optique']];
+let order=[], shown=[], memDone=false;
+function nextClip(){
+  if(!order.length) order=clips.map((_,i)=>i).sort(()=>Math.random()-.5);
+  const c=clips[order.pop()]; shown.push(c);
+  const card=$('#feedCard'); card.classList.remove('swap'); void card.offsetWidth; card.classList.add('swap');
+  $('.big',card)?($('.big',card).textContent=c[0],$('b',card).textContent=c[1]):0;
+  const n=shown.length, sec=n*15;
+  $('#swipeInfo').textContent=`${n} vidéo${n>1?'s':''} · ${sec<60?sec+' s':Math.floor(sec/60)+' min '+String(sec%60).padStart(2,'0')+' s'}`;
+  $$('#tricks .lock').forEach(li=>{if(n>=+li.dataset.at) li.classList.remove('lock');});
+  if(n===4) say("Pas de fin, pas de page finale… je n'ai pas vu le temps passer.",'worried');
+  if(n===10) say("Déjà dix vidéos. Qu'est-ce que je retiens de tout ça ?",'sleepy');
+  if(n>=8 && !memDone) askMem();
+}
+function askMem(){
+  memDone=true;
+  const target=shown[2], pool=clips.filter(c=>c!==target).sort(()=>Math.random()-.5).slice(0,2);
+  const opts=[target,...pool].sort(()=>Math.random()-.5);
+  $('#memBox').hidden=false;
+  $('#memQ').textContent='Quel était le titre de la vidéo n° 3 ?';
+  $('#memOpts').innerHTML=opts.map((o,i)=>`<button class="opt" data-i="${i}"></button>`).join('');
+  $$('#memOpts .opt').forEach((b,i)=>{
+    b.textContent=opts[i][0]+' '+opts[i][1];
+    b.onclick=()=>{
+      const ok=opts[i]===target, v=$('#memV'); v.className='verdict show '+(ok?'good':'bad');
+      v.innerHTML=`<strong>${ok?'Bonne réponse':'Raté'}</strong>`;
+      v.appendChild(document.createTextNode(`C'était « ${target[1]} ». Plus on enchaîne, moins on retient chaque vidéo, et on n'a presque jamais un moment de pause entre deux.`));
+      $$('#memOpts .opt').forEach(x=>x.disabled=true);
+      say(ok?"Tu t'en souviens ! Mais combien d'autres ont déjà disparu ?":"Moi non plus je ne m'en souviens pas… ça défile trop vite.",ok?'think':'sleepy');
+    };
+  });
+}
+$('#swipe').onclick=nextClip;
+
+quiz($('#attQuiz'),$('#attTally'),[
+  {q:"Le cerveau des ados est encore en construction, surtout les zones qui aident à se contrôler et à planifier.",best:'ok',why:"La maturation du cortex préfrontal continue jusqu'au début de l'âge adulte. Ce n'est pas un défaut : c'est pour ça que les adolescents sont plus sensibles aux récompenses rapides et à l'avis des autres."},
+  {q:"Défilement infini, lecture automatique, notifications : tout est pensé pour retenir l'attention.",best:'ok',why:"Ces applis gagnent de l'argent avec le temps passé dessus, et ces mécanismes sont documentés."},
+  {q:"Beaucoup de vidéos courtes par jour va de pair avec plus de difficultés à se concentrer.",best:'corr',why:"Des études observent ce lien, surtout chez les gros utilisateurs. Mais on ne sait pas si les vidéos causent le problème, ou si ceux qui ont déjà du mal à se concentrer en regardent plus. La recherche continue."},
+  {q:"Les vidéos courtes abîment le cerveau de façon permanente.",best:'faux',why:"Aucune preuve d'une lésion durable. « Brain rot » est surtout un mot d'humour. Le vrai problème : le temps pris au sommeil, aux devoirs, au mouvement et aux amis en vrai."},
+  {q:"Dormir trop peu à cause de l'écran réduit la concentration le lendemain.",best:'ok',why:"Le manque de sommeil abîme l'attention, la mémoire et l'humeur : c'est bien établi. Utiliser un écran tard retarde souvent l'endormissement."},
+  {q:"Une « détox dopamine » d'une semaine remet le cerveau à zéro.",best:'faux',why:"La dopamine n'est pas une jauge qui se vide, et rien ne prouve un « reset ». Mais des pauses régulières aident à reprendre la main sur ses habitudes."},
+  {q:"Les réseaux sociaux peuvent aussi faire du bien : garder le lien avec ses amis, créer, apprendre.",best:'ok',why:"Tout dépend de la durée, du moment et de ce qu'on y fait. Un usage choisi n'a pas les mêmes effets qu'un scroll sans fin à minuit."}
+],[['ok','Établi'],['corr','Lien observé, cause pas prouvée'],['faux','Faux ou exagéré']],st.att,s=>say(s.ok>=6?"Vous savez faire le tri entre ce qui est prouvé et ce qui est exagéré !":"Pas simple : la science n'a pas tout tranché. Retiens : sommeil, pauses, et un usage choisi.",s.ok>=6?'proud':'think'));
+
+let chT=null, chStart=0, urges=0;
+$('#chStart').onclick=()=>{
+  if(chT) return;
+  urges=0; $('#chCount').textContent=''; $('#chMsg').textContent=''; $('#chUrge').disabled=false; chStart=Date.now();
+  say("Respire. Je compte avec vous…",'think');
+  chT=setInterval(()=>{
+    const e=(Date.now()-chStart)/1000;
+    $('#chFill').style.width=Math.min(e/60*100,100)+'%';
+    $('#chTime').textContent=Math.max(0,60-Math.floor(e))+' s';
+    if(e>=60){
+      clearInterval(chT); chT=null; $('#chUrge').disabled=true;
+      $('#chMsg').textContent=urges===0?"Zéro envie : bravo, ça demande de l'entraînement !":`${urges} envie${urges>1?'s':''} de regarder le téléphone en une minute. C'est normal : le réflexe est installé, et on peut le travailler.`;
+      say(urges===0?"Zéro envie ! Impressionnant.":"Pas facile, hein ? Le réflexe s'entraîne, comme un muscle.",urges===0?'proud':'happy');
+    }
+  },250);
+};
+$('#chUrge').onclick=()=>{urges++;$('#chCount').textContent=`${urges} envie${urges>1?'s':''}`;};
+
+/* ---------- recommencer ---------- */
+const rb=$('#resetBtn'), wb=$('#wipeBtn'), wy=$('#wipeYes'), wn=$('#wipeNo');
+function reloadPage(){
+  try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+  try{location.reload();}catch(e){location.href=location.pathname;}
+}
+rb.onclick=reloadPage;
+function wipeAsk(on){
+  wb.hidden=on; wy.hidden=!on; wn.hidden=!on;
+  $('#resetMsg').textContent=on?`Tout sera effacé : vos badges${PACT?' et le pacte de famille':''}. On continue ?`:"Pour tout effacer, c'est ici.";
+}
+wb.onclick=()=>wipeAsk(true);
+wn.onclick=()=>wipeAsk(false);
+wy.onclick=()=>{
+  try{localStorage.removeItem('mochi-pacte');localStorage.removeItem('seleirine-badges');}catch(e){}
+  reloadPage();
+};
+
+/* ---------- boot ---------- */
+const m=/^#etape-(\d+)$/.exec(location.hash);
+go(m?+m[1]-1:0,{noscroll:true});
+})();
+</script>
+
+</body></html>
