@@ -13,19 +13,19 @@
   --sun:#FFC83D; --coral:#FF5D7A; --face:#1C1642;
   --sky:#2D9CFF; --mint:#19C79B; --pink:#FF7ACB;
   --coral-bg:#FFE0E6; --sky-bg:#D6ECFF; --mint-bg:#D3F6E8; --sun-bg:#FFF0C2; --pink-bg:#FFE0F3; --vio-bg:#E4DCFF;
-  --sun-ink:#8A5F00; --coral-ink:#C42340; --mint-ink:#0B7F5F; --sky-ink:#0B64B8; --pink-ink:#AD1A78; --vio-ink:#5B35E6;
-  --good:#0B7F5F; --good-bg:#D3F6E8; --bad:#C42340; --bad-bg:#FFDDE3;
+  --sun-ink:#8A5F00; --coral-ink:#B81E3A; --mint-ink:#076B50; --sky-ink:#0B64B8; --pink-ink:#AD1A78; --vio-ink:#5B35E6;
+  --good:#076B50; --good-bg:#D3F6E8; --bad:#B81E3A; --bad-bg:#FFDDE3;
   --f-display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
   --f-body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#130F2B; --surface:#211C47; --surface2:#322B68; --ink:#F3F0FF; --muted:#B0AADF;
   --line:#6A5ED0; --shadow:#06040F; --accent:#A18AFF; --accent-ink:#130F2B;
-  --coral:#FF7A92; --good:#44E0B3; --good-bg:#10372E; --bad:#FF7A91; --bad-bg:#45192A; --sky:#5BB6FF; --mint:#3EDDB0; --pink:#FF8FD6; --coral-bg:#45192A; --sky-bg:#142C4D; --mint-bg:#10372E; --sun-bg:#43370F; --pink-bg:#472043; --vio-bg:#322B68; --sun-ink:#FFC83D; --coral-ink:#FF7A92; --mint-ink:#44E0B3; --sky-ink:#6CC0FF; --pink-ink:#FF8FD6; --vio-ink:#A18AFF; color-scheme:dark}}
+  --coral:#FF7A92; --good:#44E0B3; --good-bg:#10372E; --bad:#FF7A91; --bad-bg:#45192A; --sky:#5BB6FF; --mint:#3EDDB0; --pink:#FF8FD6; --coral-bg:#45192A; --sky-bg:#142C4D; --mint-bg:#10372E; --sun-bg:#43370F; --pink-bg:#472043; --vio-bg:#322B68; --sun-ink:#FFC83D; --coral-ink:#FF7A92; --mint-ink:#44E0B3; --sky-ink:#6CC0FF; --pink-ink:#FF8FD6; --vio-ink:#AE9BFF; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#130F2B; --surface:#211C47; --surface2:#322B68; --ink:#F3F0FF; --muted:#B0AADF;
   --line:#6A5ED0; --shadow:#06040F; --accent:#A18AFF; --accent-ink:#130F2B;
-  --coral:#FF7A92; --good:#44E0B3; --good-bg:#10372E; --bad:#FF7A91; --bad-bg:#45192A; --sky:#5BB6FF; --mint:#3EDDB0; --pink:#FF8FD6; --coral-bg:#45192A; --sky-bg:#142C4D; --mint-bg:#10372E; --sun-bg:#43370F; --pink-bg:#472043; --vio-bg:#322B68; --sun-ink:#FFC83D; --coral-ink:#FF7A92; --mint-ink:#44E0B3; --sky-ink:#6CC0FF; --pink-ink:#FF8FD6; --vio-ink:#A18AFF; color-scheme:dark}
+  --coral:#FF7A92; --good:#44E0B3; --good-bg:#10372E; --bad:#FF7A91; --bad-bg:#45192A; --sky:#5BB6FF; --mint:#3EDDB0; --pink:#FF8FD6; --coral-bg:#45192A; --sky-bg:#142C4D; --mint-bg:#10372E; --sun-bg:#43370F; --pink-bg:#472043; --vio-bg:#322B68; --sun-ink:#FFC83D; --coral-ink:#FF7A92; --mint-ink:#44E0B3; --sky-ink:#6CC0FF; --pink-ink:#FF8FD6; --vio-ink:#AE9BFF; color-scheme:dark}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -378,6 +378,21 @@ input[type=range]{width:100%;accent-color:var(--accent);height:28px}
 .pform{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-weight:600;font-size:.9rem}
 .pform input{font:600 1.1rem var(--f-body);width:8ch;padding:.3rem .6rem;border:2.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
 
+.brand{margin:0}
+[tabindex="-1"]:focus{outline:none}
+#tfaTerm:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.hero{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:800}
+.top-row{flex-wrap:wrap;gap:6px 14px;align-items:center}
+.chk{display:inline-flex;gap:6px;align-items:center;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--accent)}
+.track{height:auto;margin-inline:0;padding-inline:18px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.track::before{display:none}
+.trackin{position:relative;height:46px;min-width:560px}
+.trackin::before{content:"";position:absolute;left:0;right:0;top:23px;height:6px;margin-top:-3px;border-radius:9px;background:var(--surface2)}
+.badge{opacity:1}
+.badge:not(.on) .coin{opacity:.5}
+
 /* day game */
 .moment{display:flex;flex-direction:column;gap:10px}
 .moment h3{font-size:1.15rem}
@@ -398,7 +413,7 @@ input[type=range]{width:100%;accent-color:var(--accent);height:28px}
 
 <div class="app">
   <header class="top">
-    <div class="top-row"><span class="brand">Le voyage de Séleirine</span><span class="where" id="where"></span><span class="where" id="bc"></span><button class="btn tiny" id="parentBtn" type="button">🔒 Mode parent</button></div>
+    <div class="top-row"><h1 class="brand">Le voyage de Séleirine</h1><span class="where" id="where"></span><span class="where" id="bc"></span><label class="chk"><input type="checkbox" id="noTimer"> Sans chrono</label><button class="btn tiny" id="parentBtn" type="button">🔒 Mode parent</button></div>
     <div class="pbox" id="parentBox" hidden></div>
     <div class="track" id="track" role="navigation" aria-label="Étapes du voyage">
       <div class="fill" id="fill"></div>
@@ -407,7 +422,7 @@ input[type=range]{width:100%;accent-color:var(--accent);height:28px}
   </header>
 
   <main class="stage">
-    <aside class="guide" aria-live="polite">
+    <aside class="guide" aria-live="polite" aria-label="Séleirine, la mascotte">
       <svg class="mochi" id="mochi" viewBox="0 0 160 172" role="img" aria-label="Séleirine, la mascotte">
         <ellipse cx="80" cy="164" rx="46" ry="6" fill="var(--shadow)" opacity=".25"/>
         <line x1="80" y1="32" x2="80" y2="14" stroke="var(--face)" stroke-width="5" stroke-linecap="round"/>
@@ -428,7 +443,7 @@ input[type=range]{width:100%;accent-color:var(--accent);height:28px}
       <!-- 0 intro -->
       <section class="scene" data-key="intro">
         <p class="kicker">Pour toute la famille</p>
-        <h1>Le voyage de <span class="hl">Séleirine</span></h1>
+        <h2 class="hero">Le voyage de <span class="hl">Séleirine</span></h2>
         <p class="lead">Séleirine vit dans un téléphone. Pour traverser quinze étapes sans se faire piéger, elle a besoin de vous. Chaque étape est une mission : il faut la réussir pour débloquer la suivante, et plus vous jouez juste, plus vous gagnez d'étoiles et de badges.</p>
         <ul class="roadmap" id="roadmap"></ul>
         <button class="btn primary big" data-next>Partir avec Séleirine</button>
@@ -688,10 +703,10 @@ input[type=range]{width:100%;accent-color:var(--accent);height:28px}
           </div>
         </div>
         <ul class="rules" id="tricks">
-          <li class="lock" data-at="4"><b>Pas de fin</b>Le défilement infini n'a pas de dernière page : rien ne t'invite à t'arrêter.</li>
-          <li class="lock" data-at="7"><b>Lecture automatique</b>La suivante démarre toute seule. Arrêter demande une décision, continuer non.</li>
-          <li class="lock" data-at="10"><b>Récompense variable</b>Parfois une vidéo géniale, parfois nulle : comme une machine à sous, l'incertitude donne envie de relancer.</li>
-          <li class="lock" data-at="13"><b>Un algorithme qui apprend</b>Plus tu regardes, mieux l'appli devine ce qui te retiendra. C'est son travail.</li>
+          <li class="lock" aria-hidden="true" data-at="4"><b>Pas de fin</b>Le défilement infini n'a pas de dernière page : rien ne t'invite à t'arrêter.</li>
+          <li class="lock" aria-hidden="true" data-at="7"><b>Lecture automatique</b>La suivante démarre toute seule. Arrêter demande une décision, continuer non.</li>
+          <li class="lock" aria-hidden="true" data-at="10"><b>Récompense variable</b>Parfois une vidéo géniale, parfois nulle : comme une machine à sous, l'incertitude donne envie de relancer.</li>
+          <li class="lock" aria-hidden="true" data-at="13"><b>Un algorithme qui apprend</b>Plus tu regardes, mieux l'appli devine ce qui te retiendra. C'est son travail.</li>
         </ul>
 
         <div class="mission" id="g-focus"></div>
@@ -825,11 +840,11 @@ input[type=range]{width:100%;accent-color:var(--accent);height:28px}
 
   <div id="toasts" aria-live="polite"></div>
 
-  <footer class="nav">
+  <nav class="nav" aria-label="Changer d'étape">
     <button class="btn" id="prev">Précédent</button>
     <span class="counter" id="counter"></span>
     <button class="btn primary" id="next">Suivant</button>
-  </footer>
+  </nav>
 </div>
 
 <script>
@@ -865,6 +880,14 @@ const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math
 const starStr=n=>'★'.repeat(n)+'☆'.repeat(3-n);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const starsEl=n=>{const e=h('div','stars',starStr(n));e.setAttribute('role','img');e.setAttribute('aria-label',`${n} étoile${n>1?'s':''} sur 3`);return e;};
+const reduceMotion=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.documentElement.lang='fr';
+/* option d'accessibilité : jouer sans chrono */
+const noTimerEl=$('#noTimer');
+try{noTimerEl.checked=localStorage.getItem('seleirine-notimer')==='1';}catch(e){}
+noTimerEl.onchange=()=>{try{localStorage.setItem('seleirine-notimer',noTimerEl.checked?'1':'0');}catch(e){} document.dispatchEvent(new Event('seleirine-timer'));};
+const timersOff=()=>noTimerEl.checked;
 
 /* ---------- scenes, progress and gating ---------- */
 const KEYS=['intro','phish','pw','tfa','leak','post','info','game','stranger','intim','love','bully','codes','attn','cadre','batt','end'];
@@ -990,12 +1013,13 @@ function banner(i){
 
 
 const track=$('#track'), fill=$('#fill'), runner=$('#runner');
+const trackIn=h('div','trackin'); while(track.firstChild) trackIn.appendChild(track.firstChild); track.appendChild(trackIn);
 const dots=scenes.map((s,i)=>{
   const b=h('button','dot');
   b.style.setProperty('--dc',themeCol[look[i][0]]); b.style.left=(i/(N-1)*100)+'%';
   b.setAttribute('aria-label',`Étape ${i} : ${s.label}`);
   b.addEventListener('click',()=>go(i));
-  track.insertBefore(b,runner); return b;
+  trackIn.insertBefore(b,runner); return b;
 });
 $('#roadmap').innerHTML=scenes.slice(1,N-1).map((s,i)=>`<li style="--sc:${themeCol[look[i+1][0]]}"><span class="mi"><svg viewBox="0 0 100 100" aria-hidden="true">${icons[look[i+1][1]]}</svg></span><b>${i+1}. ${s.desc}</b></li>`).join('');
 
@@ -1019,13 +1043,15 @@ function go(i,opts={}){
   const first=cur<0; cur=i;
   secs.forEach((s,k)=>s.hidden=k!==i);
   const p=i/(N-1)*100; fill.style.width=p+'%'; runner.style.left=p+'%';
+  track.scrollTo({left:Math.max(0,runner.offsetLeft+18-track.clientWidth/2),behavior:reduceMotion?'auto':'smooth'});
   $('#where').textContent=i===0?'Départ':i===N-1?'Arrivée':`Étape ${i} sur ${N-2} · ${scenes[i].label}`;
   $('#prev').disabled=i===0;
   say(scenes[i].say,scenes[i].mood); if(!first) hop();
   if(i===N-1) renderEnd();
   refresh();
   try{history.replaceState(null,'','#etape-'+i);}catch(e){}
-  if(!first && !opts.noscroll) window.scrollTo({top:0,behavior:'smooth'});
+  if(!first){const hd=secs[i].querySelector('h2'); if(hd){hd.tabIndex=-1;hd.focus({preventScroll:true});}}
+  if(!first && !opts.noscroll) window.scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
 }
 $('#prev').onclick=()=>go(cur-1);
 $('#next').onclick=()=>go(cur+1);
@@ -1043,7 +1069,7 @@ function finish(key,stars){
   doneSet.add(i); progress.stars[key]=Math.max(progress.stars[key]||0,stars);
   progress.unlocked=Math.max(progress.unlocked,i+1); saveProgress();
   refresh();
-  if(first||better){toast('★','Mission réussie',starStr(stars));}
+  if(first||better){toast('★','Mission réussie',`${stars} étoile${stars>1?'s':''} sur 3`);}
   say(stars>=3?"Mission réussie, trois étoiles ! Vous êtes très forts.":stars===2?"Mission réussie ! Encore un petit effort pour les trois étoiles.":"Mission réussie ! Vous pouvez rejouer pour gagner plus d'étoiles.",'proud');
   checkBadges();
 }
@@ -1055,7 +1081,7 @@ function parts(key,labels,groups){
   const apply=()=>els.forEach((g,i)=>g.forEach(e=>{e.hidden=!(i===0||parent||doneSet.has(KEYS.indexOf(key))||got[i-1]>0);}));
   partRegs.push(apply); apply();
   return (i,stars)=>{
-    got[i]=Math.max(got[i],stars); chips[i].classList.add('ok');
+    got[i]=Math.max(got[i],stars); chips[i].classList.add('ok'); chips[i].textContent='✓ '+(i+1)+'. '+labels[i];
     apply();
     if(got.every(x=>x>0)) finish(key,Math.max(1,Math.round(got.reduce((a,b)=>a+b,0)/got.length)));
     else say("Première partie réussie ! Il en reste une.",'happy');
@@ -1065,7 +1091,7 @@ function renderEnd(){
   $('#badges').innerHTML=badgeDefs.map(b=>{const on=earned.has(b.id);return `<div class="badge ${on?'on':''}"><span class="coin">${b.l}</span><b>${b.t}</b><span>${on?'Gagné':b.h}</span></div>`;}).join('');
   const max=(N-2)*3;
   $('#starTotal').textContent=`${totalStars()} sur ${max}`;
-  $('#stars').innerHTML=KEYS.slice(1,N-1).map((k,i)=>{const n=progress.stars[k]||0;return `<div class="badge ${n?'on':''}"><span class="coin">${i+1}</span><b>${scenes[i+1].label}</b><span class="stars" style="font-size:1.2rem">${starStr(n)}</span></div>`;}).join('');
+  $('#stars').innerHTML=KEYS.slice(1,N-1).map((k,i)=>{const n=progress.stars[k]||0;return `<div class="badge ${n?'on':''}"><span class="coin">${i+1}</span><b>${scenes[i+1].label}</b><span class="stars" role="img" aria-label="${n} étoile${n>1?'s':''} sur 3" style="font-size:1.2rem">${starStr(n)}</span></div>`;}).join('');
 }
 
 /* ---------- parent mode: free navigation, protected by a fixed 4-digit code ---------- */
@@ -1114,13 +1140,14 @@ function deck(o){
   const root=o.el; root.innerHTML='';
   const wrap=h('div','deck');
   const top=h('div','dtop'), prog=h('span','dprog'), stk=h('span','dstreak'), hud=h('span','dhud'); top.append(prog,stk,hud);
-  const tbar=h('div','tbar'), tfill=h('i'); tbar.appendChild(tfill); tbar.hidden=!o.secs;
+  const tbar=h('div','tbar'), tfill=h('i'); tbar.appendChild(tfill); tbar.hidden=!(o.secs&&!timersOff());
   const stage=h('div','dstage'), card=h('div','dcard');
-  const stampL=h('span','dstamp l'), stampR=h('span','dstamp r');
+  const stampL=h('span','dstamp l'), stampR=h('span','dstamp r'); stampL.setAttribute('aria-hidden','true'); stampR.setAttribute('aria-hidden','true');
   stage.appendChild(card);
   const binsEl=h('div','dbins'), fb=h('div','dfb'), ready=h('div','dready'); fb.hidden=true; ready.hidden=true;
   wrap.append(top,tbar,ready,stage,binsEl,fb); root.appendChild(wrap);
   const swipeable=o.bins.length===2;
+  const T=()=>o.secs&&!timersOff();
   let queue,errors,streak,okCount,cur,locked,timer,t0,active=false,total=o.items.length;
 
   o.bins.forEach((b,i)=>{
@@ -1131,13 +1158,13 @@ function deck(o){
     queue=shuffle(o.items).map(x=>({...x})); errors=0;streak=0;okCount=0;locked=false;
     wrap.querySelectorAll('.dres').forEach(e=>e.remove()); active=false; cur=null;
     if(o.onReset) o.onReset();
-    if(o.secs) showReady(); else {stage.hidden=false; draw();}
+    if(T()) showReady(); else {stage.hidden=false; draw();}
   }
   function showReady(){
-    stage.hidden=true;binsEl.hidden=true;fb.hidden=true;tbar.hidden=false;tfill.style.width='100%';tbar.classList.remove('low');
+    stage.hidden=true;binsEl.hidden=true;fb.hidden=true;tbar.hidden=!T();tfill.style.width='100%';tbar.classList.remove('low');
     prog.textContent=`${total} cartes`;stk.textContent='';hudRefresh();
     ready.hidden=false;ready.innerHTML='';
-    ready.append(h('h3',null,'Prêt·e ?'),h('p',null,o.readyText||`${total} cartes, ${o.secs} secondes par carte. Quand le chrono se termine sans réponse, la carte compte comme une erreur.`));
+    ready.append(h('h3',null,'Prêt·e ?'),h('p',null,o.readyText&&T()?o.readyText:T()?`${total} cartes, ${o.secs} secondes par carte. Quand le chrono se termine sans réponse, la carte compte comme une erreur.`:`${total} cartes, sans chrono (l'option « Sans chrono » est activée).`));
     const go=h('button','btn primary','Lancer la mission'); go.onclick=()=>{ready.hidden=true;stage.hidden=false;draw();}; ready.appendChild(go);
   }
   function hudRefresh(){hud.textContent=o.hud?o.hud():'';}
@@ -1148,13 +1175,14 @@ function deck(o){
     card.append(stampL,stampR); stampL.textContent=o.bins[0].l; stampR.textContent=o.bins[1]?o.bins[1].l:'';
     stampL.style.opacity=stampR.style.opacity=0;
     if(cur.tag) card.appendChild(h('span','dtag',cur.tag));
-    if(cur.e) card.appendChild(h('div','demo',cur.e));
+    if(cur.e){const de=h('div','demo',cur.e); de.setAttribute('aria-hidden','true'); card.appendChild(de);}
     card.appendChild(h('p','dq',cur.q));
     card.classList.toggle('swipe',swipeable);
     prog.textContent=`Carte ${Math.min(okCount+1,total)} / ${total}`;
     stk.textContent=streak>=2?`🔥 ${streak} d'affilée`:'';
     hudRefresh();
-    if(o.secs) startTimer();
+    tbar.hidden=!T(); if(T()) startTimer();
+    const fbtn=binsEl.querySelector('button'); if(fbtn) fbtn.focus({preventScroll:true});
   }
   function startTimer(){
     stopTimer(); t0=Date.now(); tbar.classList.remove('low'); tfill.style.width='100%';
@@ -1182,18 +1210,20 @@ function deck(o){
     fb.appendChild(h('p',null,cur.why2||cur.why));
     if(!ok) fb.appendChild(h('p',null,'Cette carte reviendra plus tard.'));
     const nb=h('button','btn primary','Lis l\'explication…'); nb.disabled=true; fb.appendChild(nb);
-    setTimeout(()=>{nb.disabled=false;nb.textContent=queue.length?'Continuer':'Voir le résultat';nb.focus({preventScroll:true});},ok?900:1900);
+    fb.tabIndex=-1; fb.focus({preventScroll:true});
+    setTimeout(()=>{nb.disabled=false;nb.textContent=queue.length?'Continuer':'Voir le résultat';},ok?900:1900);
     nb.onclick=draw;
     say(ok?pick(["Oui, exactement !","Bien vu !","C'est ça !"]):pick(["Aïe… lis bien l'explication.","Pas tout à fait. Regarde pourquoi.","Hmm, retiens celle-là."]),ok?'happy':'worried');
   }
   function finishDeck(){
     stopTimer(); active=false; stage.hidden=true; binsEl.hidden=true; fb.hidden=true; tbar.hidden=true;
     const stars=starsFor(errors,total);
-    const r=h('div','dres'); r.append(h('h3',null,'Mission réussie !'),h('div','stars',starStr(stars)),
+    const r=h('div','dres'); r.append(h('h3',null,'Mission réussie !'),starsEl(stars),
       h('p',null,errors===0?'Aucune erreur, bravo.':`${errors} carte${errors>1?'s':''} à revoir au premier essai.`));
     if(o.summary) r.appendChild(h('p',null,o.summary()));
-    const again=h('button','btn',stars<3?'Rejouer pour viser 3 étoiles':'Rejouer'); again.onclick=()=>{tbar.hidden=!o.secs;reset();};
+    const again=h('button','btn',stars<3?'Rejouer pour viser 3 étoiles':'Rejouer'); again.onclick=()=>{tbar.hidden=!T();reset();};
     r.appendChild(again); wrap.appendChild(r);
+    const hd=r.querySelector('h3'); hd.tabIndex=-1; hd.focus({preventScroll:true});
     o.onDone({errors,total,stars});
   }
   /* swipe */
@@ -1217,6 +1247,7 @@ function deck(o){
     if(!fb.hidden){ if(e.key==='Enter'||e.key===' '){const b=fb.querySelector('button');if(b&&!b.disabled){e.preventDefault();b.click();}} return; }
     const i=+e.key-1; if(i>=0&&i<o.bins.length&&!locked&&cur) answer(o.bins[i].k);
   });
+  document.addEventListener('seleirine-timer',()=>{if(!T()){stopTimer();tbar.hidden=true;} if(!ready.hidden) showReady();});
   reset();
 }
 
@@ -1227,29 +1258,30 @@ function hunt(o){
   let found,wrong,hearts,over;
   const mock=h('div','mock'), head=h('div','mockhead'); const av=h('span','av',o.avatar||'🙂'); head.append(av,h('span',null,o.title));
   const hud=h('div','dtop'), hl=h('span','hearts'), fl=h('span','dhud'); hud.append(fl,hl);
-  const log=h('div','hlog');
+  hl.setAttribute('role','img');
+  const log=h('div','hlog'); log.setAttribute('role','log'); log.setAttribute('aria-label','Résultats');
   root.append(hud,mock,log);
   function build(){
     found=0;wrong=0;hearts=3; mock.innerHTML=''; log.innerHTML=''; mock.appendChild(head);
     root.querySelectorAll('.dres').forEach(e=>e.remove());
     shuffle(o.spots).forEach(s=>{
-      const b=h('button','spot'); b.append(h('span','se',s.e), h('span',null,s.t));
+      const b=h('button','spot'); const se=h('span','se',s.e); se.setAttribute('aria-hidden','true'); b.append(se, h('span',null,s.t));
       b.onclick=()=>{
         if(b.classList.contains('found')||b.classList.contains('safe')) return;
         const f=h('div','dfb '+(s.leak?'good':'bad'));
         if(s.leak){found++;b.classList.add('found');f.append(h('strong',null,'Fuite trouvée'),h('p',null,s.why));say("Bien vu, ça fuit !",'happy');}
         else{wrong++;hearts=Math.max(0,hearts-1);b.classList.add('safe');f.append(h('strong',null,'Pas de risque ici'),h('p',null,s.why));say("Pas celui-là… mais bonne question.",'think');}
-        log.prepend(f); refresh();
+        b.setAttribute('aria-disabled','true'); log.prepend(f); refresh();
         if(found===leaks) end();
       };
       mock.appendChild(b);
     });
     refresh();
   }
-  function refresh(){hl.textContent='♥'.repeat(hearts)+'♡'.repeat(3-hearts);fl.textContent=`${found} / ${leaks} trouvées`;}
+  function refresh(){hl.textContent='♥'.repeat(hearts)+'♡'.repeat(3-hearts);hl.setAttribute('aria-label',`${hearts} cœur${hearts>1?'s':''} restant${hearts>1?'s':''}`);fl.textContent=`${found} / ${leaks} trouvées`;}
   function end(){
     const stars=wrong<=1?3:wrong<=3?2:1;
-    const r=h('div','dres'); r.append(h('h3',null,'Toutes les fuites sont trouvées !'),h('div','stars',starStr(stars)),h('p',null,wrong===0?'Sans aucune fausse alerte.':`${wrong} fausse${wrong>1?'s':''} alerte${wrong>1?'s':''}.`));
+    const r=h('div','dres'); r.append(h('h3',null,'Toutes les fuites sont trouvées !'),starsEl(stars),h('p',null,wrong===0?'Sans aucune fausse alerte.':`${wrong} fausse${wrong>1?'s':''} alerte${wrong>1?'s':''}.`));
     const again=h('button','btn','Rejouer'); again.onclick=build; r.appendChild(again); root.appendChild(r);
     o.onDone({errors:wrong,total:o.spots.length,stars});
   }
@@ -1261,22 +1293,24 @@ function branch(o){
   const root=o.el; root.innerHTML='';
   const meter=h('div','bmeter'), bar=h('div','shbar'), bi=h('i'); bar.appendChild(bi); meter.append(h('span',null,'Danger'),bar);
   const chat=h('div','card chat bchat'), opts=h('div','bopts'), endBox=h('div');
+  chat.setAttribute('role','log'); chat.setAttribute('aria-label','Conversation');
+  meter.setAttribute('role','img'); meter.setAttribute('aria-label','Niveau de danger : 0 sur 4');
   root.append(meter,chat,opts,endBox);
   let danger,losses=0,seq=0;
-  function start(){danger=0;chat.innerHTML='';opts.innerHTML='';endBox.innerHTML='';opts.hidden=false;bi.style.width='0%';seq++;play(o.start,seq);}
+  function start(){danger=0;chat.innerHTML='';opts.innerHTML='';endBox.innerHTML='';opts.hidden=false;bi.style.width='0%';meter.setAttribute('aria-label','Niveau de danger : 0 sur 4');seq++;play(o.start,seq);}
   async function play(id,my){
     const n=o.nodes[id];
     if(n.end){return showEnd(n);}
     for(const line of n.them){
-      const t=h('div','bub them typing','…'); chat.appendChild(t); await sleep(650); if(my!==seq) return;
-      t.classList.remove('typing'); t.textContent=line;
+      const t=h('div','bub them typing','…'); t.setAttribute('aria-hidden','true'); chat.appendChild(t); await sleep(650); if(my!==seq) return;
+      t.remove(); chat.appendChild(h('div','bub them',line));
     }
     opts.innerHTML='';
     n.opts.forEach(op=>{
       const b=h('button','opt',op.t);
       b.onclick=()=>{
         opts.innerHTML=''; chat.appendChild(h('div','bub me',op.t));
-        danger+=op.d||0; bi.style.width=Math.min(100,danger*25)+'%';
+        danger+=op.d||0; bi.style.width=Math.min(100,danger*25)+'%'; meter.setAttribute('aria-label',`Niveau de danger : ${Math.min(4,danger)} sur 4`);
         play(op.next,my);
       };
       opts.appendChild(b);
@@ -1287,10 +1321,10 @@ function branch(o){
   function showEnd(n){
     opts.hidden=true; endBox.innerHTML='';
     const win=n.end==='win';
-    const f=h('div','dfb '+(win?'good':'bad')); f.append(h('strong',null,n.title),h('p',null,n.text)); endBox.appendChild(f);
+    const f=h('div','dfb '+(win?'good':'bad')); f.append(h('strong',null,n.title),h('p',null,n.text)); endBox.appendChild(f); f.tabIndex=-1; f.focus({preventScroll:true});
     if(win){
       const stars=danger===0?3:danger<=2?2:1;
-      const r=h('div','dres'); r.append(h('h3',null,'Fin sûre !'),h('div','stars',starStr(stars)),h('p',null,danger===0?'Aucun faux pas.':'Tu y es arrivé·e. Tu peux rejouer pour viser 3 étoiles.'));
+      const r=h('div','dres'); r.append(h('h3',null,'Fin sûre !'),starsEl(stars),h('p',null,danger===0?'Aucun faux pas.':'Tu y es arrivé·e. Tu peux rejouer pour viser 3 étoiles.'));
       const again=h('button','btn','Rejouer'); again.onclick=start; r.appendChild(again); endBox.appendChild(r);
       say("Voilà. C'est exactement ça !",'proud');
       o.onWin({danger,stars,losses});
@@ -1307,7 +1341,7 @@ function branch(o){
 function match(o){
   const root=o.el; root.innerHTML='';
   const hud=h('div','dtop'), att=h('span','dhud'), fnd=h('span','dhud'); hud.append(att,fnd);
-  const grid=h('div','mgrid'), log=h('div','hlog'); root.append(hud,grid,log);
+  const grid=h('div','mgrid'), log=h('div','hlog'); log.setAttribute('role','log'); log.setAttribute('aria-label','Paires trouvées'); root.append(hud,grid,log);
   let attempts,matched,first,lockb;
   function build(){
     attempts=0;matched=0;first=null;lockb=false; grid.innerHTML='';log.innerHTML='';
@@ -1317,7 +1351,7 @@ function match(o){
     shuffle(cards).forEach(c=>{
       const b=h('button','mcard'); b.append(h('span','back','?'));
       const f=h('span','front'); if(c.big){f.className='front big';} f.textContent=c.t; b.appendChild(f);
-      b.setAttribute('aria-label','Carte à retourner');
+      b.setAttribute('aria-label','Carte face cachée');
       b.onclick=()=>flip(b,c); grid.appendChild(b);
     });
     refresh();
@@ -1325,7 +1359,7 @@ function match(o){
   function refresh(){att.textContent=`Essais : ${attempts}`;fnd.textContent=`${matched} / ${o.pairs.length} paires`;}
   async function flip(b,c){
     if(lockb||b.classList.contains('open')||b.classList.contains('ok')) return;
-    b.classList.add('open');
+    b.classList.add('open'); b.setAttribute('aria-label',c.t);
     if(!first){first={b,c};return;}
     attempts++; const a=first; first=null; lockb=true;
     if(a.c.p===c.p){
@@ -1335,12 +1369,12 @@ function match(o){
       if(matched===o.pairs.length) end();
     }else{
       refresh(); await sleep(1000);
-      a.b.classList.remove('open');b.classList.remove('open'); lockb=false;
+      a.b.classList.remove('open');b.classList.remove('open'); a.b.setAttribute('aria-label','Carte face cachée'); b.setAttribute('aria-label','Carte face cachée'); lockb=false;
     }
   }
   function end(){
     const n=o.pairs.length, stars=attempts<=n+2?3:attempts<=n+7?2:1;
-    const r=h('div','dres'); r.append(h('h3',null,'Toutes les paires sont trouvées !'),h('div','stars',starStr(stars)),h('p',null,`${attempts} essais pour ${n} paires.`));
+    const r=h('div','dres'); r.append(h('h3',null,'Toutes les paires sont trouvées !'),starsEl(stars),h('p',null,`${attempts} essais pour ${n} paires.`));
     const again=h('button','btn','Rejouer'); again.onclick=build; r.appendChild(again); root.appendChild(r);
     o.onDone({attempts,stars});
   }
@@ -1351,7 +1385,7 @@ function match(o){
 function order(o){
   const root=o.el; root.innerHTML='';
   const n=o.steps.length;
-  const pile=h('div','opile'), slotsEl=h('ol','oslots'), msg=h('p','tally'), outBox=h('div');
+  const pile=h('div','opile'), slotsEl=h('ol','oslots'), msg=h('p','tally'), outBox=h('div'); msg.setAttribute('role','status');
   root.append(h('p','tally','Touche les cartes dans l\'ordre, de la 1re à la dernière action.'),pile,slotsEl,msg,outBox);
   let slots,attempts,locked;
   function build(){
@@ -1377,7 +1411,7 @@ function order(o){
     if(good===n){
       render();
       const stars=attempts===1?3:attempts===2?2:1;
-      const r=h('div','dres'); r.append(h('h3',null,'Dans le bon ordre !'),h('div','stars',starStr(stars)));
+      const r=h('div','dres'); r.append(h('h3',null,'Dans le bon ordre !'),starsEl(stars));
       o.steps.forEach((s,k)=>{r.appendChild(h('p',null,`${k+1}. ${s.t} : ${s.d}`));});
       const again=h('button','btn','Rejouer'); again.onclick=()=>{build.order=null;build();}; r.appendChild(again); outBox.appendChild(r);
       o.onDone({attempts,stars});
@@ -1454,7 +1488,7 @@ deck({el:$('#g-phish'),secs:12,bins:[{k:'trap',l:'Piège'},{k:'real',l:'Vrai mes
       if(gi>=2) finish('pw',gi>=3?3:2);
       say(gi===1?"Une heure ! Le pirate s'obstine encore…":gi===2?"100 ans ! Le pirate abandonne. Mission réussie !":"Des millions d'années… le pirate pleure.",gi>=2?'proud':'happy');
     }
-    chips.forEach((c,i)=>{c.classList.toggle('ok',i<gi);c.classList.toggle('now',i===gi);});
+    chips.forEach((c,i)=>{c.classList.toggle('ok',i<gi);c.classList.toggle('now',i===gi);c.textContent=(i<gi?'✓ ':'')+goals[i].l;});
     const target=goals[Math.min(gi,goals.length-1)].s;
     const pct=!pw?100:Math.max(4,Math.min(100,100*(1-Math.log10(sec+1)/Math.log10(target))));
     $('#pwBot').style.width=pct+'%';
@@ -1501,7 +1535,7 @@ deck({el:$('#g-phish'),secs:12,bins:[{k:'trap',l:'Piège'},{k:'real',l:'Vrai mes
     <div class="grid" id="tfaWaves"></div>
     <div id="tfaRows" style="display:flex;flex-direction:column;gap:12px"></div>
     <div class="row"><button class="btn primary" id="tfaGo">Lancer l'attaque du pirate</button><span class="tally" id="tfaInfo"></span></div>
-    <div class="term" id="tfaTerm" hidden aria-live="polite"></div>
+    <div class="term" id="tfaTerm" hidden></div>
     <div id="tfaRes"></div>
   </div>`;
   const tips={none:"Le mot de passe seul. Si le pirate l'a, il entre.",sms:"Un code arrive par SMS. Il ne protège pas si quelqu'un reçoit tes SMS à ta place.",app:"Le code est généré dans une appli sur ton téléphone. Il peut être relayé en direct par un faux site.",key:"Ton téléphone prouve que c'est toi, uniquement auprès du vrai site. Un faux site ne peut rien relayer."};
@@ -1523,7 +1557,7 @@ deck({el:$('#g-phish'),secs:12,bins:[{k:'trap',l:'Piège'},{k:'real',l:'Vrai mes
   }
   let busy=false, attempts=0;
   render();
-  const term=$('#tfaTerm');
+  const term=$('#tfaTerm'); term.setAttribute('role','log'); term.setAttribute('aria-label',"Journal de l'attaque du pirate"); term.tabIndex=0;
   const line=async(txt,cls)=>{const p=h('div',cls||null,txt);term.appendChild(p);term.scrollTop=term.scrollHeight;await sleep(650);};
   $('#tfaGo').onclick=async()=>{
     if(busy) return; busy=true; attempts++; render();
@@ -1561,7 +1595,7 @@ deck({el:$('#g-phish'),secs:12,bins:[{k:'trap',l:'Piège'},{k:'real',l:'Vrai mes
     }else{
       const stars=1+(fell[1]?0:1)+(fell[2]?0:1);
       st.tfaOk=true;
-      res.append(h('h3',null,stars===3?'Tous les comptes ont tenu !':'La boîte mail a tenu !'),h('div','stars',starStr(stars)),
+      res.append(h('h3',null,stars===3?'Tous les comptes ont tenu !':'La boîte mail a tenu !'),starsEl(stars),
         h('p',null,stars===3?"Une protection adaptée à chaque compte, avec les 6 points : parfait.":`${100-lost} points sauvés sur 100. Tu peux relancer pour tout sauver.`));
       finish('tfa',stars);
     }
@@ -1756,7 +1790,7 @@ deck({el:$('#g-love'),bins:[{k:'ctrl',l:'Contrôle'},{k:'ok',l:'Ça va'}],items:
     $('.big',card).textContent=c[0]; $('b',card).textContent=c[1];
     const n=shown.length, sec=n*15;
     $('#swipeInfo').textContent=`${n} vidéo${n>1?'s':''} · ${sec<60?sec+' s':Math.floor(sec/60)+' min '+String(sec%60).padStart(2,'0')+' s'}`;
-    $$('#tricks .lock').forEach(li=>{if(n>=+li.dataset.at) li.classList.remove('lock');});
+    $$('#tricks .lock').forEach(li=>{if(n>=+li.dataset.at){li.classList.remove('lock');li.removeAttribute('aria-hidden');}});
     if(n===4) say("Pas de fin, pas de page finale… je n'ai pas vu le temps passer.",'worried');
     if(n===10) say("Déjà dix vidéos. Qu'est-ce que je retiens de tout ça ?",'sleepy');
     if(n>=8&&!memDone) askMem();
@@ -1782,8 +1816,10 @@ deck({el:$('#g-love'),bins:[{k:'ctrl',l:'Contrôle'},{k:'ok',l:'Ça va'}],items:
   }
   /* focus game */
   const root=$('#g-focus');
-  root.innerHTML=`<div class="card fake"><h3>2. L'épreuve de concentration</h3><p class="tally" style="font-weight:500">Pendant 30 secondes, touche uniquement les ronds verts. Des notifications vont essayer de te distraire : si tu les touches, tu perds des points. Objectif : au moins 10 ronds et 3 distractions au maximum.</p><div class="row"><button class="btn primary" id="fcGo">Lancer l'épreuve</button><span class="dhud" id="fcInfo"></span></div><div class="tbar"><i id="fcBar" style="width:100%"></i></div><div class="arena" id="fcArena"></div><p class="tally" id="fcMsg" style="font-weight:500"></p></div>`;
-  const arena=$('#fcArena'); let timers=[], hits=0, dist=0, running=false;
+  root.innerHTML=`<div class="card fake"><h3>2. L'épreuve de concentration</h3><p class="tally" style="font-weight:500">Pendant 30 secondes, touche uniquement les ronds verts. Des notifications vont essayer de te distraire : si tu les touches, tu perds des points. Objectif : au moins 10 ronds et 3 distractions au maximum. Si l'épreuve est difficile à faire (souris, vue, doigt), un bouton pour la passer apparaît après deux essais.</p><div class="row"><button class="btn primary" id="fcGo">Lancer l'épreuve</button><span class="dhud" id="fcInfo"></span></div><div class="tbar"><i id="fcBar" style="width:100%"></i></div><div class="arena" id="fcArena"></div><p class="tally" id="fcMsg" role="status" style="font-weight:500"></p><button class="btn" id="fcSkip" hidden>Passer l'épreuve (1 étoile)</button></div>`;
+  const arena=$('#fcArena'); let timers=[], hits=0, dist=0, running=false, fails=0;
+  arena.setAttribute('role','group'); arena.setAttribute('aria-label','Zone de jeu : épreuve visuelle, à la souris ou au doigt');
+  $('#fcSkip').onclick=()=>{$('#fcSkip').hidden=true;$('#fcMsg').textContent='Épreuve passée (1 étoile).';pa(1,1);};
   const notifs=["💬 3 nouveaux messages !","🔥 Ta flamme va s'éteindre !","❤️ 12 likes sur ta photo","📣 Live en cours !","🎁 Cadeau à récupérer !"];
   const info=()=>{$('#fcInfo').textContent=`Ronds : ${hits} · Distractions : ${dist}`;};
   function place(el,w){el.style.left=Math.random()*Math.max(10,arena.clientWidth-w)+'px';el.style.top=Math.random()*Math.max(10,arena.clientHeight-60)+'px';arena.appendChild(el);}
@@ -1809,6 +1845,7 @@ deck({el:$('#g-love'),bins:[{k:'ctrl',l:'Contrôle'},{k:'ok',l:'Ça va'}],items:
         }else{
           $('#fcMsg').textContent=hits<10?`Seulement ${hits} ronds : il en faut 10. Réessaie.`:`${dist} distractions : 3 au maximum. Réessaie en ignorant les notifications.`;
           say("Pas facile ! Les notifications sont faites pour ça. On réessaie ?",'think');
+          fails++; if(fails>=2) $('#fcSkip').hidden=false;
         }
         checkBadges();
       }
@@ -1897,7 +1934,7 @@ deck({el:$('#g-love'),bins:[{k:'ctrl',l:'Contrôle'},{k:'ok',l:'Ça va'}],items:
   ];
   root.innerHTML=`<div class="card moment"><div class="batt-wrap"><div class="batt" role="img" aria-label="Batterie"><i id="dayBar" style="width:50%"></i></div><span class="batt-pct" id="dayPct">50%</span></div><h3 id="dayT"></h3><div class="bopts" id="dayO"></div><div id="dayLog" class="hlog"></div></div>`;
   let v,i;
-  function setBatt(){const b=$('#dayBar');b.style.width=Math.max(v,3)+'%';b.style.background=v>=60?'var(--good)':v>=30?'var(--sun)':'var(--bad)';$('#dayPct').textContent=v+'%';}
+  function setBatt(){$('#g-day .batt').setAttribute('aria-label','Batterie à '+v+' %');const b=$('#dayBar');b.style.width=Math.max(v,3)+'%';b.style.background=v>=60?'var(--good)':v>=30?'var(--sun)':'var(--bad)';$('#dayPct').textContent=v+'%';}
   function draw(){
     if(i>=moments.length) return end();
     const m=moments[i]; $('#dayT').textContent=m.t; const box=$('#dayO'); box.innerHTML='';
@@ -1917,7 +1954,7 @@ deck({el:$('#g-love'),bins:[{k:'ctrl',l:'Contrôle'},{k:'ok',l:'Ça va'}],items:
     const r=h('div','dres');
     if(v>=70){
       const stars=v>=90?3:v>=80?2:1;
-      r.append(h('h3',null,`Séleirine finit à ${v} % !`),h('div','stars',starStr(stars)),h('p',null,"Une bonne journée, ça se construit par petits choix."));
+      r.append(h('h3',null,`Séleirine finit à ${v} % !`),starsEl(stars),h('p',null,"Une bonne journée, ça se construit par petits choix."));
       const again=h('button','btn','Rejouer la journée'); again.onclick=start; r.appendChild(again); box.appendChild(r);
       finish('batt',stars);
     }else{
